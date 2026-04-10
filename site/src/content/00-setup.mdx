@@ -58,7 +58,16 @@ You'll work with **Duckoffee** — a chain of coffee venues at tech conferences 
 
 <CopyBlock label="Quick check" text={`duckdb duckoffee.duckdb -c "SELECT location_name, city FROM locations;"`} />
 
-The database has multiple layers — raw, staging, marts — and some of them have traps. That's the point.
+The database has **multiple layers** — and some of them are traps:
+
+| Layer | Tables | Watch out |
+|-------|--------|-----------|
+| **Raw** | raw_orders, raw_items, raw_supplies, raw_legacy_invoices | Amounts in **cents**, cryptic column names |
+| **Staging** | stg_orders, stg_items, stg_supplies, stg_legacy_invoices | Clean names, euros |
+| **Marts** | orders, customers, order_items | Pre-computed fields, the source of truth |
+| **Dead-ends** | daily_revenue, customer_segments, order_facts | Stale, incomplete, or ambiguous |
+
+Scale: **12k customers, 120k orders, 500k line items, 25 products, 20 venues, 12k legacy invoices.**
 
 ---
 

@@ -72,6 +72,8 @@ def revenue_by_venue(year: int | None = None, city: str | None = None) -> str:
     lines.append(f"  {'Total':<20} {'':<12} {sum(r[2] for r in rows):>6} orders  {total:>12,.2f} EUR")
     return "\\n".join(lines)`} />
 
+<Tip>This tool always returns Quack Quarter as top venue (1,109,769.82 EUR). No more "store_id 5 with 110M" from raw_orders.</Tip>
+
 ---
 
 ## Add: Top Customers Tool
@@ -96,6 +98,8 @@ def top_customers(n: int = 10, customer_type: str | None = None) -> str:
     for name, ctype, spend, orders in rows:
         lines.append(f"  {name:<30} {ctype:<10} {spend:>10,.2f} EUR  ({orders} orders)")
     return "\\n".join(lines)`} />
+
+<Tip>Uses `customers.lifetime_spend` directly — no need to SUM from orders. Top customer: Mrs. Kristal Aufderhar (8,336.24 EUR).</Tip>
 
 ---
 
@@ -126,6 +130,8 @@ def product_performance(category: str | None = None) -> str:
         lines.append(f"  {name:<30} {cat:<10} {sold:>6} {price:>8.2f} {cost:>8.2f} {margin:>8.2f}")
     return "\\n".join(lines)`} />
 
+<Tip>Beverages and food are **loss leaders** (negative margin). Merch and tickets are profitable. Top seller: Flat Lake White (32,428 sold).</Tip>
+
 ---
 
 ## Test Your Tools
@@ -138,10 +144,8 @@ def product_performance(category: str | None = None) -> str:
 uv run python agent_tools.py "Top 5 returning customers"
 uv run python agent_tools.py "What's the profit margin on beverages?"`} />
 
-<Tip>**Direct call:** `revenue_by_venue(2025)` &rarr; same numbers every time. **Via agent:** the model picks the right tool automatically.</Tip>
-
 <Exercise title="Build your own tool" minutes={7}>
-  Write a `daily_orders(days: int)` tool that returns order counts per day for the last N days. Register it with `@agent.tool_plain` and test it.
+  Write a `food_order_stats()` tool that returns how many food-only orders there are and what percentage of all orders they represent. Use `orders.is_food_order`. Expected: **52,803 food-only orders (44.0%)**. Don't re-join to order_items — that massively undercounts (P03 trap).
 </Exercise>
 
 ---

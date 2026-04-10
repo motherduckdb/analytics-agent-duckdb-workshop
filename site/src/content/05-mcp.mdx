@@ -51,7 +51,7 @@ def top_customers(n: int = 10, customer_type: str | None = None) -> str:
 
 @mcp.tool()
 def search_tables(keyword: str) -> str:
-    """Search table and column descriptions."""
+    """Search table and column descriptions stored via COMMENT ON."""
     con = get_con()
     pattern = f"%{keyword}%"
     tables = con.execute(
@@ -74,12 +74,13 @@ if __name__ == "__main__":
 <CopyBlock label="FastMCP dev UI" text="uv run fastmcp dev mcp-server/server.py" />
 
 Try:
-1. `search_tables("revenue")` — should warn about daily_revenue being stale
-2. `revenue_by_venue(2025)` — exact numbers
-3. `query("SELECT count(*) FROM orders")` — raw SQL
+1. `search_tables("revenue")` — should warn about daily_revenue being stale (5/20 venues)
+2. `search_tables("cents")` — should flag raw_orders and raw_legacy_invoices
+3. `revenue_by_venue(2025)` — Quack Quarter on top
+4. `query("SELECT count(*) FROM orders")` — 120,000
 
 <Exercise title="Test your MCP server" minutes={5}>
-  Start the FastMCP dev UI and call each of your tools. Verify the results match what you got in Part 4.
+  Start the FastMCP dev UI and call each tool. Verify: `search_tables("SAP")` returns the raw_legacy_invoices warning. `top_customers(5)` returns Mrs. Kristal Aufderhar on top.
 </Exercise>
 
 ---
@@ -123,7 +124,7 @@ asyncio.run(main())`} />
 Open Claude Desktop or Claude Code and ask: *"What's our revenue by venue?"*
 
 <Exercise title="Wire it up" minutes={5}>
-  Create the `.mcp.json` file. Open Claude Code (or another MCP client) and ask it questions about Duckoffee. The tools should appear automatically.
+  Create the `.mcp.json` file. Open Claude Code (or another MCP client) and ask it: "What's the cancellation rate in the legacy invoice system?" It should use `search_tables` to find the stg_legacy_invoices table and return **10.04%** (L01).
 </Exercise>
 
 ---

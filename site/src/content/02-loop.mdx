@@ -36,7 +36,7 @@ Try:
 
 <CopyBlock label="Harder questions" text={`What's the average order value?
 Which venue has the highest revenue?
-How many repeat customers do we have?`} />
+What are the top 5 best-selling products?`} />
 
 On well-structured schemas, this is a **solved problem** — 85-95% accuracy.
 
@@ -100,40 +100,38 @@ print(ask("What are the top 5 best-selling products?"))`} />
 
 The agent will confidently pick the **wrong** table. Try these:
 
-<CopyBlock label="Trap questions" text={`What's the average order value?`} />
+<CopyBlock label="Trap question 1 — Cents vs euros (C01)" text={`What's the average order value?`} />
 
-<Tip>The agent will likely query `raw_orders.order_total` and return ~17,000 — because raw_orders stores amounts in **cents**, not euros. The correct answer is 169.90 euros from the `orders` table.</Tip></invoke>
+<Tip>The agent will likely query `raw_orders.order_total` and return **~17,000** — because raw_orders stores amounts in **cents**, not euros. The correct answer is **169.90 euros** from the `orders` table.</Tip>
 
-<CopyBlock label="More traps" text={`Which venue has the highest total revenue?
-How many repeat customers do we have?
-What's the daily revenue trend for the last 3 months?`} />
+<CopyBlock label="Trap question 2 — Column renames (C04)" text={`Which venue has the highest total revenue?`} />
 
-Common failures:
-- **Cents vs euros**: `raw_orders` is 100x too high
-- **Column names**: `raw_orders.customer` vs `orders.customer_id`, `store_id` vs `location_id`
-- **Enum values**: no `'repeat'` in customer_type — it's `'returning'`
-- **Dead-end tables**: `daily_revenue` only has 5 of 20 venues, stops at 2025
+<Tip>Without context, the agent may query raw_orders (cents) and group by `store_id` instead of joining to locations. Trap answer: "store_id 5 with 110,976,982". Correct answer: **Quack Quarter with 1,109,769.82 euros**.</Tip>
+
+<CopyBlock label="Trap question 3 — Enum values (C06)" text={`How many repeat customers do we have?`} />
+
+<Tip>The agent will filter for `customer_type = 'repeat'` and get **0 results**. The actual value is `'returning'` — there are **7,759 returning customers**.</Tip>
 
 <Exercise title="Break it" minutes={5}>
-  Try to find a question that makes the agent return a wrong answer. Compare with the correct answer from the `orders` mart.
+  Try these traps yourself. Can you also find wrong answers for: "How many orders are worth more than 100 euros?" (C02) and "Show me all orders for customer 42" (C03)?
 </Exercise>
 
 ---
 
-## What's Solved, What's Left
+## The Full Trap Sheet
 
-The agentic loop and text-to-SQL on clean schemas? **Solved.** opencode, Claude Code, or ~35 lines of Python handle it.
+| Trap | What happens | Correct answer |
+|------|-------------|---------------|
+| `raw_orders` amounts in cents | Revenue is 100x too high | Use `orders` (euros) |
+| `raw_orders.customer` (no `_id`) | Silent wrong joins | Use `orders.customer_id` |
+| `raw_orders.store_id` | Not `location_id` | Use `orders.location_id` |
+| `customer_type = 'repeat'` | 0 results | It's `'returning'` (7,759) |
+| `daily_revenue` table | Only 5 of 20 venues, no 2026 data | Compute from `orders` |
+| `customer_segments` | Only 6k of 12k customers | Derive from `customers` mart |
+| `order_facts.total` | Actually subtotal, not order_total | Use `orders.order_total` |
+| `raw_legacy_invoices` | SAP-style column names (AMTTTL, STSCODE) | Use `stg_legacy_invoices` |
 
-What **breaks it** is your real data — traps the model can't see:
-
-| The Trap | What Happens |
-|----------|-------------|
-| `raw_orders` amounts in cents | Revenue is 100x too high |
-| `daily_revenue` table is stale | Missing 3 venues, no 2026 data |
-| `customer_type` = `'returning'` not `'repeat'` | Zero results |
-| `raw_orders.customer` has no `_id` suffix | Silent wrong joins |
-
-**Next:** we add **semantic context** — a skill file + database comments — so the model knows which tables to trust and what the columns actually mean.
+**Next:** we add **semantic context** — a skill file + database comments — so the model knows which tables to trust.
 
 <Quiz
   question="Why did the agent return ~17,000 for average order value?"

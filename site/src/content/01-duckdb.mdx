@@ -29,6 +29,8 @@ con.sql("""
 
 <CopyBlock label="Run it" text="uv run python part1.py" />
 
+You should see: **120k orders, 12k customers, 500k line items, 25 products, 20 venues.**
+
 ---
 
 ## Explore the Venues
@@ -56,7 +58,7 @@ con.sql("""
 """).show()`} />
 
 <Exercise title="Write your own query" minutes={3}>
-  Try querying the `customers` table. How many returning vs new customers are there?
+  Try querying the `customers` table. How many returning vs new customers are there? (Hint: the column is `customer_type` with values `'new'` and `'returning'`.)
 </Exercise>
 
 ---
