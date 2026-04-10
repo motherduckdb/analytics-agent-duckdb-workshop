@@ -1,10 +1,54 @@
-## Environment Check
+## What You'll Need
 
-<CopyBlock label="Run in your terminal" text={`python3 --version   # Need 3.10+
-uv --version
-duckdb --version`} />
+This workshop has two paths. Pick whichever fits your setup:
 
-<Tip>Using the devcontainer? Everything is pre-installed. Just open the terminal.</Tip>
+| | **Option A: Devcontainer** | **Option B: Local** |
+|---|---|---|
+| **LLM** | Ollama + Gemma 4 (runs locally, free) | Anthropic API key (Claude) |
+| **Python** | Pre-installed (3.12) | Python 3.10+ |
+| **Package manager** | `uv` (pre-installed) | `uv` ([install](https://docs.astral.sh/uv/getting-started/installation/)) |
+| **DuckDB** | Pre-installed | `uv tool install duckdb-cli` |
+| **Agentic client** | `opencode` (pre-installed) | `claude` (Claude Code) |
+| **Where** | GitHub Codespace or local Docker | Your own machine |
+
+<Tip>**Devcontainer is the fastest path.** Open the repo in a Codespace and everything is pre-installed — Python, DuckDB, uv, Ollama, opencode. Zero setup.</Tip>
+
+---
+
+## Option A: Devcontainer
+
+<CopyBlock label="Open in Codespace (browser)" text={`# Click "Code" → "Codespaces" → "Create codespace on main"
+# Or from CLI:
+gh codespace create --repo motherduckdb/analytics-agent-duckdb-workshop`} />
+
+Once the container is ready:
+
+<CopyBlock label="Start Ollama and pull Gemma" text={`ollama serve &
+ollama pull gemma4:26b`} />
+
+<CopyBlock label="Verify" text={`uv --version
+duckdb --version
+ollama list`} />
+
+---
+
+## Option B: Local Setup
+
+<CopyBlock label="Install prerequisites" text={`# Install uv (if you don't have it)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install DuckDB CLI
+uv tool install duckdb-cli
+
+# Clone the repo
+git clone https://github.com/motherduckdb/analytics-agent-duckdb-workshop.git
+cd analytics-agent-duckdb-workshop/workshop`} />
+
+<CopyBlock label="Set your Anthropic key" text={`export ANTHROPIC_API_KEY="sk-ant-..."`} />
+
+<CopyBlock label="Verify" text={`uv --version
+duckdb --version
+python3 --version   # Need 3.10+`} />
 
 ---
 
@@ -35,7 +79,7 @@ You spend **a day a week** on ad-hoc queries. Today we'll build an **answers mac
 |------|------|------|
 | 1 | DuckDB from Python | 10 min |
 | 2 | Text-to-SQL & the agentic loop | 15 min |
-| 3 | Context: skill file + semantic layer | 15 min |
+| 3 | Semantic context: skill file + COMMENT ON | 15 min |
 | 4 | Deterministic tools with PydanticAI | 20 min |
 | 5 | Distribute via FastMCP | 15 min |
 
@@ -47,5 +91,5 @@ You spend **a day a week** on ad-hoc queries. Today we'll build an **answers mac
     "It's a CSV file",
   ]}
   correct={1}
-  explanation="The Duckoffee database has raw tables (amounts in cents!), staging tables, clean marts, and dead-end tables that will trick an LLM. That's what makes semantic layers valuable."
+  explanation="The Duckoffee database has raw tables (amounts in cents!), staging tables, clean marts, and dead-end tables that will trick an LLM. That's what makes semantic context valuable."
 />

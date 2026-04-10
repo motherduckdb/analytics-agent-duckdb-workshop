@@ -14,6 +14,8 @@ Your tools work — but they're bundled in your script. MCP **separates tools fr
 
 ## Build the MCP Server
 
+<CopyBlock label="Install FastMCP" text="uv add fastmcp" />
+
 <CopyBlock label="mcp-server/server.py" text={`from fastmcp import FastMCP
 import duckdb, json
 from pathlib import Path
@@ -69,12 +71,16 @@ if __name__ == "__main__":
 
 ## Test Locally
 
-<CopyBlock label="FastMCP dev UI" text="fastmcp dev mcp-server/server.py" />
+<CopyBlock label="FastMCP dev UI" text="uv run fastmcp dev mcp-server/server.py" />
 
 Try:
 1. `search_tables("revenue")` — should warn about daily_revenue being stale
 2. `revenue_by_venue(2025)` — exact numbers
 3. `query("SELECT count(*) FROM orders")` — raw SQL
+
+<Exercise title="Test your MCP server" minutes={5}>
+  Start the FastMCP dev UI and call each of your tools. Verify the results match what you got in Part 4.
+</Exercise>
 
 ---
 
@@ -108,13 +114,17 @@ asyncio.run(main())`} />
 <CopyBlock label="Claude Code — .mcp.json" text={`{
   "mcpServers": {
     "duckoffee": {
-      "command": "python3",
-      "args": ["mcp-server/server.py"]
+      "command": "uv",
+      "args": ["run", "python", "mcp-server/server.py"]
     }
   }
 }`} />
 
 Open Claude Desktop or Claude Code and ask: *"What's our revenue by venue?"*
+
+<Exercise title="Wire it up" minutes={5}>
+  Create the `.mcp.json` file. Open Claude Code (or another MCP client) and ask it questions about Duckoffee. The tools should appear automatically.
+</Exercise>
 
 ---
 
@@ -126,7 +136,7 @@ Our tools are <Badge color="#16AA98">deterministic</Badge> — pure Python. Some
 |-----------|:---:|---------|
 | Deterministic | No | `revenue_by_venue()` |
 | API call | No | `check_inventory()` |
-| Specialized AI | **Yes** | `analyze_video()` → Gemini Vision |
+| Specialized AI | **Yes** | `analyze_video()` &rarr; Gemini Vision |
 | Embedding search | **Yes** | `semantic_search()` |
 
 <Tip>Client model = generalist (reasoning). Server model = specialist (vision, embeddings). Most tools don't need a model.</Tip>
@@ -138,7 +148,7 @@ Our tools are <Badge color="#16AA98">deterministic</Badge> — pure Python. Some
 **You stopped building the agent. You started serving capabilities.**
 
 - **Skill** = flexibility (instructions the LLM follows)
-- **Tool** = determinism (same input → same output)
+- **Tool** = determinism (same input &rarr; same output)
 - **MCP** = distribution (build once, any client connects)
 - **COMMENT ON** = traps become warnings
 

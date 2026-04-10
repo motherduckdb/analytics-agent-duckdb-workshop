@@ -1,12 +1,45 @@
-## The Agent is Smart Enough. Your Data Isn't.
+## What is Semantic Context?
 
-The model can write SQL. The loop works. What broke it was **the data** — cents vs euros, wrong table names, dead-end tables.
+The **semantic layer** — a single source of truth for metrics and definitions — is an appealing idea. But people, like water, follow the path of least resistance.
 
-Two layers of context fix this:
+"Semantic" is just a fancy word meaning there's a **specific meaning** for certain concepts and metrics in a company. Some are easy and stable; others live in people's heads and shift over time.
+
+The good news: **LLMs are very good at pulling data from many sources.** We can use the full *semantic context* — not just a separate layer.
+
+---
+
+## Where Semantic Context Already Lives
+
+In practice, semantic context is already embedded across your tools:
+
+```
+                    Semantic Context
+         ┌──────────────┼──────────────┐
+         │              │              │
+   ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐
+   │   dbt     │ │   BI      │ │  Analyst   │
+   │  models   │ │  charts   │ │  queries   │
+   └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
+         │              │              │
+         └──────────────┼──────────────┘
+                        │
+              ┌─────────┴─────────┐
+              │  Your Data        │
+              │  Warehouse        │
+              └───────────────────┘
+```
+
+You don't need a complex data application to create this. It can start as simple as **comments on columns and tables** in your data warehouse that you let your LLM generate monthly from your sources.
+
+---
+
+## Two Layers of Context
+
+The model can write SQL. The loop works. What broke it was **the data**. Two layers of context fix this:
 
 | Layer | What it does | Where it lives |
 |-------|-------------|----------------|
-| **Skill file** | Which tables to use, business rules | Markdown → system prompt |
+| **Skill file** | Which tables to use, business rules | Markdown &rarr; system prompt |
 | **COMMENT ON** | What each column means | In the `.duckdb` file |
 
 ---
@@ -33,11 +66,9 @@ Answer: What's the average order value?`} />
 
 Now the agent should return **169.90 euros** (from `orders`) not ~17,000 (from `raw_orders`).
 
-Try the other traps:
-
-<CopyBlock label="Previously broken questions" text={`Which venue has the highest total revenue?
-How many repeat customers do we have?
-Show me all orders for customer 42`} />
+<Exercise title="Test the skill file" minutes={5}>
+  Re-ask the questions that broke the agent in Part 2. Does the skill file fix them all?
+</Exercise>
 
 ---
 
@@ -94,6 +125,10 @@ Also check database comments:
 Now answer: What's the daily revenue trend for the last 3 months?`} />
 
 <Tip>Without context, the agent would use daily_revenue (stale, 5 venues). With context, it computes from orders (all 20 venues, up to date).</Tip>
+
+<Exercise title="Add your own COMMENT ON" minutes={3}>
+  Pick a column in the `products` table and add a `COMMENT ON` that would help an LLM understand it. Verify with `duckdb_columns()`.
+</Exercise>
 
 ---
 

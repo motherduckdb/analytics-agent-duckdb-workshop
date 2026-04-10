@@ -130,13 +130,19 @@ def product_performance(category: str | None = None) -> str:
 
 ## Test Your Tools
 
-<CopyBlock label="Test directly (no model needed)" text="python3 agent_tools.py" />
+<CopyBlock label="Install deps" text="uv add pydantic-ai duckdb" />
 
-<CopyBlock label="Test via agent" text={`python3 agent_tools.py "Revenue by venue for 2025"
-python3 agent_tools.py "Top 5 returning customers"
-python3 agent_tools.py "What's the profit margin on beverages?"`} />
+<CopyBlock label="Test directly (no model needed)" text="uv run python agent_tools.py" />
 
-<Tip>**Direct call:** `revenue_by_venue(2025)` → same numbers every time. **Via agent:** the model picks the right tool automatically.</Tip>
+<CopyBlock label="Test via agent" text={`uv run python agent_tools.py "Revenue by venue for 2025"
+uv run python agent_tools.py "Top 5 returning customers"
+uv run python agent_tools.py "What's the profit margin on beverages?"`} />
+
+<Tip>**Direct call:** `revenue_by_venue(2025)` &rarr; same numbers every time. **Via agent:** the model picks the right tool automatically.</Tip>
+
+<Exercise title="Build your own tool" minutes={7}>
+  Write a `daily_orders(days: int)` tool that returns order counts per day for the last N days. Register it with `@agent.tool_plain` and test it.
+</Exercise>
 
 ---
 

@@ -29,4 +29,5 @@ export const PARTS = [
   { id: "context", label: "Context", tagline: "15 min", file: "03-context" },
   { id: "tools", label: "Tools", tagline: "20 min", file: "04-tools" },
   { id: "mcp", label: "MCP", tagline: "15 min", file: "05-mcp" },
+  { id: "wrapup", label: "Wrap-Up", tagline: "5 min", file: "06-wrapup" },
 ] as const;

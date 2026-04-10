@@ -88,7 +88,7 @@ export function PartPage({
     <div className={wrapper}>
       <div
         style={{
-          maxWidth: fullscreen ? 900 : 720,
+          maxWidth: fullscreen ? 1100 : 1024,
           margin: "0 auto",
           padding: fullscreen ? "24px 48px 48px" : "16px 24px 48px",
         }}

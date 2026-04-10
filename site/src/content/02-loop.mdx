@@ -18,11 +18,13 @@ opencode and Claude Code have the loop built in. The model runs bash, reads outp
 
 <CopyBlock label="With Claude Code (Anthropic)" text="claude" />
 
-Then:
+Then just ask — the agent is smart enough to figure out the schema:
 
-<CopyBlock label="Prompt" text={`You have a DuckDB database at duckoffee.duckdb.
-Query with: duckdb duckoffee.duckdb -c "SQL HERE"
-Explore the schema, then tell me: what are the top 5 best-selling products?`} />
+<CopyBlock label="Prompt" text={`Get me some analytics about this duckdb db duckoffee.duckdb using uv`} />
+
+<Exercise title="Try it yourself" minutes={5}>
+  Pick opencode or Claude Code. Ask 2-3 questions about the Duckoffee data. Watch how the agent explores the schema on its own.
+</Exercise>
 
 ---
 
@@ -42,7 +44,7 @@ On well-structured schemas, this is a **solved problem** — 85-95% accuracy.
 
 ## The Agentic Loop — Visualized
 
-Watch the full cycle: prompt → tool call → error → self-correct → success.
+Watch the full cycle: prompt &rarr; tool call &rarr; error &rarr; self-correct &rarr; success.
 
 <AgenticLoop />
 
@@ -84,13 +86,13 @@ def ask(question):
             return choice.message.content
         for call in choice.message.tool_calls:
             args = json.loads(call.function.arguments)
-            print(f"  🔧 {call.function.name}: {args.get('sql', '')[:70]}")
+            print(f"  tool: {call.function.name}: {args.get('sql', '')[:70]}")
             result = run_tool(call.function.name, args)
             messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
 
 print(ask("What are the top 5 best-selling products?"))`} />
 
-<CopyBlock label="Run it" text="python3 agent_loop.py" />
+<CopyBlock label="Run it" text="uv run python agent_loop.py" />
 
 ---
 
@@ -112,23 +114,26 @@ Common failures:
 - **Enum values**: no `'repeat'` in customer_type — it's `'returning'`
 - **Dead-end tables**: `daily_revenue` only has 5 of 20 venues, stops at 2025
 
+<Exercise title="Break it" minutes={5}>
+  Try to find a question that makes the agent return a wrong answer. Compare with the correct answer from the `orders` mart.
+</Exercise>
+
 ---
 
 ## What's Solved, What's Left
 
-| Solved | Who solved it |
-|--------|--------------|
-| The agentic loop | opencode, Claude Code, or ~35 lines of Python |
-| Text-to-SQL (clean schemas) | The model — 85-95% accuracy |
+The agentic loop and text-to-SQL on clean schemas? **Solved.** opencode, Claude Code, or ~35 lines of Python handle it.
 
-**What breaks it**: your real data. Traps the model can't see: cents vs euros, stale tables, ambiguous column names.
+What **breaks it** is your real data — traps the model can't see:
 
-| You build | Why |
-|-----------|-----|
-| Skill file (Part 3) | Which tables to use, which to avoid |
-| Semantic layer (Part 3) | What columns actually mean |
-| Deterministic tools (Part 4) | Exact, auditable results |
-| MCP server (Part 5) | Distribute to any client |
+| The Trap | What Happens |
+|----------|-------------|
+| `raw_orders` amounts in cents | Revenue is 100x too high |
+| `daily_revenue` table is stale | Missing 3 venues, no 2026 data |
+| `customer_type` = `'returning'` not `'repeat'` | Zero results |
+| `raw_orders.customer` has no `_id` suffix | Silent wrong joins |
+
+**Next:** we add **semantic context** — a skill file + database comments — so the model knows which tables to trust and what the columns actually mean.
 
 <Quiz
   question="Why did the agent return ~17,000 for average order value?"

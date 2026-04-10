@@ -1,0 +1,73 @@
+## What We Built
+
+In 90 minutes, you went from raw SQL to a distributed analytics toolkit:
+
+```
+  Question                  Answer
+     │                        ▲
+     ▼                        │
+  ┌──────────────────────────────┐
+  │       Any MCP Client         │
+  │  (Claude, opencode, custom)  │
+  └──────────┬───────────────────┘
+             │
+  ┌──────────▼───────────────────┐
+  │       MCP Server             │
+  │  ┌─────────┐ ┌────────────┐  │
+  │  │  Tools  │ │ Skill File │  │
+  │  └────┬────┘ └────────────┘  │
+  │       │                      │
+  │  ┌────▼────────────────────┐ │
+  │  │  DuckDB + COMMENT ON    │ │
+  │  │  (semantic context)     │ │
+  │  └─────────────────────────┘ │
+  └──────────────────────────────┘
+```
+
+---
+
+## The Stack
+
+| Layer | What | Why |
+|-------|------|-----|
+| **DuckDB** | In-process analytics | No server, just a file |
+| **Agentic loop** | LLM + tool calls in a while loop | The model writes SQL, reads errors, self-corrects |
+| **Semantic context** | Skill file + `COMMENT ON` | Prevents traps: wrong tables, wrong units, stale data |
+| **PydanticAI tools** | `@agent.tool_plain` decorators | Deterministic, auditable results |
+| **FastMCP server** | Expose tools over MCP | Any client, any model, zero lock-in |
+
+---
+
+## Key Takeaways
+
+**1. The agentic loop is a solved problem.** Don't build it from scratch — use opencode, Claude Code, or PydanticAI.
+
+**2. Your data breaks it, not the model.** Cents vs euros, stale tables, ambiguous columns. The fix is semantic context, not a better LLM.
+
+**3. Semantic context > semantic layer.** You don't need a separate application. `COMMENT ON` + a skill file get you 90% of the way.
+
+**4. Tools give you determinism.** For board decks and financial reports, `revenue_by_venue(2025)` beats LLM-generated SQL every time.
+
+**5. MCP separates building from distributing.** Build once, serve to any client. The server has no model — just Python functions.
+
+---
+
+## Go Further
+
+| What | Where |
+|------|-------|
+| **MotherDuck MCP** | The managed, cloud version of what you built today |
+| **PydanticAI docs** | [docs.pydantic.dev/pydantic-ai](https://docs.pydantic.dev/pydantic-ai) |
+| **FastMCP** | [github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp) |
+| **DuckDB docs** | [duckdb.org/docs](https://duckdb.org/docs) |
+| **This workshop** | [github.com/motherduckdb/analytics-agent-duckdb-workshop](https://github.com/motherduckdb/analytics-agent-duckdb-workshop) |
+
+---
+
+## Thank You
+
+**SQL is Dead, Long Live SQL.**
+
+The best analytics interface is natural language backed by deterministic tools and rich semantic context.
+
+Now go build something.

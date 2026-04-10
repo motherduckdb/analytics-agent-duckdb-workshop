@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div
       style={{
-        maxWidth: 720,
+        maxWidth: 1024,
         margin: "0 auto",
         padding: "48px 24px",
         fontFamily: theme.bodyFont,
