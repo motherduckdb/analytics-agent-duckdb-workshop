@@ -31,7 +31,7 @@ Then query duckoffee.duckdb.
 
 Answer: What's the average order value?`} />
 
-Now the agent should return **168.60 euros** (from `orders`) not ~16,860 (from `raw_orders`).
+Now the agent should return **169.90 euros** (from `orders`) not ~17,000 (from `raw_orders`).
 
 Try the other traps:
 
@@ -50,8 +50,8 @@ COMMENT ON TABLE orders IS 'Clean orders mart. Amounts in EUROS. Use this, not r
 COMMENT ON TABLE raw_orders IS 'Raw orders. Amounts in CENTS (divide by 100). Column "customer" = customer_id, "store_id" = location_id.';
 COMMENT ON TABLE customers IS 'Customer mart. Pre-computed: lifetime_spend, count_lifetime_orders, first/last_order_at.';
 COMMENT ON TABLE order_items IS 'Line items with product_name, product_category, product_price, supply_cost. Join to orders on order_id.';
-COMMENT ON TABLE daily_revenue IS 'STALE. Only 3 of 6 locations. No data after 2025-12-31. Use orders instead.';
-COMMENT ON TABLE customer_segments IS 'INCOMPLETE. Only 500 of 1000 customers. Derive segments from customers mart instead.';
+COMMENT ON TABLE daily_revenue IS 'STALE. Only 5 of 20 locations. No data after 2025-12-31. Use orders instead.';
+COMMENT ON TABLE customer_segments IS 'INCOMPLETE. Only 6000 of 12000 customers. Derive segments from customers mart instead.';
 COMMENT ON TABLE order_facts IS 'AMBIGUOUS. Column "total" is actually subtotal, not order_total. Use orders instead.';
 COMMENT ON COLUMN orders.order_total IS 'Total in EUROS (subtotal + tax). Use this for revenue calculations.';
 COMMENT ON COLUMN orders.is_food_order IS 'Pre-computed: TRUE if all items are Food category.';
@@ -93,7 +93,7 @@ Also check database comments:
 
 Now answer: What's the daily revenue trend for the last 3 months?`} />
 
-<Tip>Without context, the agent would use daily_revenue (stale, 3 venues). With context, it computes from orders (all 6 venues, up to date).</Tip>
+<Tip>Without context, the agent would use daily_revenue (stale, 5 venues). With context, it computes from orders (all 20 venues, up to date).</Tip>
 
 ---
 
@@ -107,9 +107,9 @@ For a **board deck** or **financial report**, you need the exact same SQL every 
   question="Why is daily_revenue a 'dead-end' table?"
   options={[
     "It has wrong data types",
-    "It only covers 3 of 6 locations and stops at 2025-12-31",
+    "It only covers 5 of 20 locations and stops at 2025-12-31",
     "It's empty",
   ]}
   correct={1}
-  explanation="daily_revenue is stale: it only has data for The Pond Stage, Feather & Bean, and Quack Quarter, and has no rows after 2025-12-31. Always compute revenue from the orders table instead."
+  explanation="daily_revenue is stale: it only has data for 5 of 20 venues (The Pond Stage, Feather & Bean, Quack Quarter, Mallard Manor, and The Duck Yard), and has no rows after 2025-12-31. Always compute revenue from the orders table instead."
 />
