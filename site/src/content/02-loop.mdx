@@ -1,0 +1,142 @@
+## <Badge color="#FFDE00">Era 1</Badge> Copy-Paste
+
+Paste your schema into a chat, ask a question, copy the SQL back into DuckDB.
+
+<CopyBlock label="Start ollama" text="ollama run gemma4:26b" />
+
+**You** are the glue — copying, pasting, fixing errors.
+
+<Tip>Still useful for one-offs. But not for repeated analytics.</Tip>
+
+---
+
+## <Badge color="#16AA98">Era 2</Badge> Agentic Clients
+
+opencode and Claude Code have the loop built in. The model runs bash, reads output, iterates.
+
+<CopyBlock label="With opencode (Ollama)" text="opencode" />
+
+<CopyBlock label="With Claude Code (Anthropic)" text="claude" />
+
+Then:
+
+<CopyBlock label="Prompt" text={`You have a DuckDB database at duckoffee.duckdb.
+Query with: duckdb duckoffee.duckdb -c "SQL HERE"
+Explore the schema, then tell me: what are the top 5 best-selling products?`} />
+
+---
+
+## Watch It Work
+
+The agent runs `SHOW TABLES`, `DESCRIBE`, writes SQL, executes, reads errors, adjusts. You type one question, it does 5-10 steps.
+
+Try:
+
+<CopyBlock label="Harder questions" text={`What's the average order value?
+Which venue has the highest revenue?
+How many repeat customers do we have?`} />
+
+On well-structured schemas, this is a **solved problem** — 85-95% accuracy.
+
+---
+
+## The Agentic Loop — Visualized
+
+Watch the full cycle: prompt → tool call → error → self-correct → success.
+
+<AgenticLoop />
+
+---
+
+## <Badge color="#6FC2FF">Era 3</Badge> Build the Loop Yourself
+
+~35 lines of Python. The agentic loop is just a `while` loop:
+
+<CopyBlock label="Create agent_loop.py" text={`from openai import OpenAI  # works with Ollama
+import duckdb, json
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+MODEL = "gemma4:26b"
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+tools = [{"type": "function", "function": {
+    "name": "query_duckdb",
+    "description": "Execute a read-only SQL query on the Duckoffee database.",
+    "parameters": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]},
+}}]
+
+def run_tool(name, args):
+    if name == "query_duckdb":
+        try:
+            rows = con.execute(args["sql"]).fetchall()
+            cols = [d[0] for d in con.description]
+            return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+        except Exception as e:
+            return json.dumps({"error": str(e)})
+
+def ask(question):
+    messages = [{"role": "user", "content": question}]
+    while True:
+        response = client.chat.completions.create(model=MODEL, tools=tools, messages=messages)
+        choice = response.choices[0]
+        messages.append(choice.message)
+        if choice.finish_reason != "tool_calls":
+            return choice.message.content
+        for call in choice.message.tool_calls:
+            args = json.loads(call.function.arguments)
+            print(f"  🔧 {call.function.name}: {args.get('sql', '')[:70]}")
+            result = run_tool(call.function.name, args)
+            messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
+
+print(ask("What are the top 5 best-selling products?"))`} />
+
+<CopyBlock label="Run it" text="python3 agent_loop.py" />
+
+---
+
+## Now Watch It Fail
+
+The agent will confidently pick the **wrong** table. Try these:
+
+<CopyBlock label="Trap questions" text={`What's the average order value?`} />
+
+<Tip>The agent will likely query `raw_orders.order_total` and return ~16,860 — because raw_orders stores amounts in **cents**, not euros. The correct answer is 168.60 euros from the `orders` table.</Tip>
+
+<CopyBlock label="More traps" text={`Which venue has the highest total revenue?
+How many repeat customers do we have?
+What's the daily revenue trend for the last 3 months?`} />
+
+Common failures:
+- **Cents vs euros**: `raw_orders` is 100x too high
+- **Column names**: `raw_orders.customer` vs `orders.customer_id`, `store_id` vs `location_id`
+- **Enum values**: no `'repeat'` in customer_type — it's `'returning'`
+- **Dead-end tables**: `daily_revenue` only has 3 of 6 venues, stops at 2025
+
+---
+
+## What's Solved, What's Left
+
+| Solved | Who solved it |
+|--------|--------------|
+| The agentic loop | opencode, Claude Code, or ~35 lines of Python |
+| Text-to-SQL (clean schemas) | The model — 85-95% accuracy |
+
+**What breaks it**: your real data. Traps the model can't see: cents vs euros, stale tables, ambiguous column names.
+
+| You build | Why |
+|-----------|-----|
+| Skill file (Part 3) | Which tables to use, which to avoid |
+| Semantic layer (Part 3) | What columns actually mean |
+| Deterministic tools (Part 4) | Exact, auditable results |
+| MCP server (Part 5) | Distribute to any client |
+
+<Quiz
+  question="Why did the agent return ~16,860 for average order value?"
+  options={[
+    "The database is corrupted",
+    "It queried raw_orders where amounts are stored in cents, not euros",
+    "It used the wrong aggregation function",
+  ]}
+  correct={1}
+  explanation="raw_orders stores amounts in cents (integers). The orders mart table has the same data in euros (doubles). Without context, the LLM picks whichever table it finds first."
+/>

@@ -1,0 +1,115 @@
+## The Agent is Smart Enough. Your Data Isn't.
+
+The model can write SQL. The loop works. What broke it was **the data** — cents vs euros, wrong table names, dead-end tables.
+
+Two layers of context fix this:
+
+| Layer | What it does | Where it lives |
+|-------|-------------|----------------|
+| **Skill file** | Which tables to use, business rules | Markdown → system prompt |
+| **COMMENT ON** | What each column means | In the `.duckdb` file |
+
+---
+
+## Skill File — The Guide
+
+A skill file tells the agent: use `orders` not `raw_orders`, amounts are in euros, customer_type is `'new'` or `'returning'` (not `'repeat'`).
+
+<CopyBlock label="Read the skill file" text="cat skill.md" />
+
+Key rules:
+- **Always prefer marts** (orders, customers, order_items) over raw/staging tables
+- **Amounts in marts are euros**, raw tables are cents
+- **Dead-end tables**: daily_revenue (stale), customer_segments (incomplete), order_facts (ambiguous)
+
+---
+
+## Use the Skill
+
+<CopyBlock label="Prompt with skill" text={`Read the file skill.md first — it has instructions for the Duckoffee database.
+Then query duckoffee.duckdb.
+
+Answer: What's the average order value?`} />
+
+Now the agent should return **168.60 euros** (from `orders`) not ~16,860 (from `raw_orders`).
+
+Try the other traps:
+
+<CopyBlock label="Previously broken questions" text={`Which venue has the highest total revenue?
+How many repeat customers do we have?
+Show me all orders for customer 42`} />
+
+---
+
+## COMMENT ON — Meaning in the Database
+
+SQL `COMMENT ON` stores descriptions **in the database itself**. Any tool that reads metadata discovers them.
+
+<CopyBlock label="Add comments to key tables" text={`duckdb duckoffee.duckdb << 'SQL'
+COMMENT ON TABLE orders IS 'Clean orders mart. Amounts in EUROS. Use this, not raw_orders.';
+COMMENT ON TABLE raw_orders IS 'Raw orders. Amounts in CENTS (divide by 100). Column "customer" = customer_id, "store_id" = location_id.';
+COMMENT ON TABLE customers IS 'Customer mart. Pre-computed: lifetime_spend, count_lifetime_orders, first/last_order_at.';
+COMMENT ON TABLE order_items IS 'Line items with product_name, product_category, product_price, supply_cost. Join to orders on order_id.';
+COMMENT ON TABLE daily_revenue IS 'STALE. Only 3 of 6 locations. No data after 2025-12-31. Use orders instead.';
+COMMENT ON TABLE customer_segments IS 'INCOMPLETE. Only 500 of 1000 customers. Derive segments from customers mart instead.';
+COMMENT ON TABLE order_facts IS 'AMBIGUOUS. Column "total" is actually subtotal, not order_total. Use orders instead.';
+COMMENT ON COLUMN orders.order_total IS 'Total in EUROS (subtotal + tax). Use this for revenue calculations.';
+COMMENT ON COLUMN orders.is_food_order IS 'Pre-computed: TRUE if all items are Food category.';
+COMMENT ON COLUMN orders.includes_ticket IS 'Pre-computed: TRUE if any item is a Ticket.';
+COMMENT ON COLUMN customers.customer_type IS 'Only two values: new, returning. No repeat/existing/VIP.';
+COMMENT ON COLUMN customers.lifetime_spend IS 'Pre-computed total spend in EUROS. No need to SUM from orders.';
+COMMENT ON COLUMN raw_orders.order_total IS 'WARNING: stored in CENTS not euros. Divide by 100.';
+COMMENT ON COLUMN raw_orders.customer IS 'This is customer_id. Column lacks the _id suffix.';
+COMMENT ON COLUMN raw_orders.store_id IS 'This is location_id. Name differs from orders table.';
+SQL`} />
+
+---
+
+## Why COMMENT ON?
+
+- **Zero infrastructure** — just SQL, stored in the `.duckdb` file
+- **Portable** — share the file, share the context
+- **Discoverable** — any tool reading `duckdb_columns()` gets them
+- **Prevents traps** — mark dead-end tables with warnings
+
+---
+
+## Test It
+
+Verify comments are stored:
+
+<CopyBlock label="Check comments" text={`duckdb duckoffee.duckdb -c "
+SELECT table_name, left(comment, 70) AS comment
+FROM duckdb_tables()
+WHERE comment IS NOT NULL
+ORDER BY table_name;
+"`} />
+
+Now re-ask the agent with both layers:
+
+<CopyBlock label="Prompt with skill + comments" text={`Read skill.md for business rules.
+Also check database comments:
+  duckdb duckoffee.duckdb -c "SELECT table_name, comment FROM duckdb_tables() WHERE comment IS NOT NULL"
+
+Now answer: What's the daily revenue trend for the last 3 months?`} />
+
+<Tip>Without context, the agent would use daily_revenue (stale, 3 venues). With context, it computes from orders (all 6 venues, up to date).</Tip>
+
+---
+
+## Where This Falls Short
+
+Ask the same revenue question twice. Compare the SQL. It's different each time.
+
+For a **board deck** or **financial report**, you need the exact same SQL every time. That's what **tools** give you — code that always produces the same result.
+
+<Quiz
+  question="Why is daily_revenue a 'dead-end' table?"
+  options={[
+    "It has wrong data types",
+    "It only covers 3 of 6 locations and stops at 2025-12-31",
+    "It's empty",
+  ]}
+  correct={1}
+  explanation="daily_revenue is stale: it only has data for The Pond Stage, Feather & Bean, and Quack Quarter, and has no rows after 2025-12-31. Always compute revenue from the orders table instead."
+/>

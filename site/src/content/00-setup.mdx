@@ -1,0 +1,51 @@
+## Environment Check
+
+<CopyBlock label="Run in your terminal" text={`python3 --version   # Need 3.10+
+uv --version
+duckdb --version`} />
+
+<Tip>Using the devcontainer? Everything is pre-installed. Just open the terminal.</Tip>
+
+---
+
+## The Duckoffee Dataset
+
+You'll work with **Duckoffee** — a chain of coffee venues at tech conferences across Amsterdam, Berlin, and Istanbul.
+
+<CopyBlock label="Quick check" text={`duckdb duckoffee.duckdb -c "SELECT location_name, city FROM locations;"`} />
+
+The database has multiple layers — raw, staging, marts — and some of them have traps. That's the point.
+
+---
+
+## The Setup
+
+You run analytics for Duckoffee. Every week the team asks:
+- *"What's our revenue by venue?"*
+- *"Who are our top customers?"*
+- *"Which products are profitable?"*
+
+You spend **a day a week** on ad-hoc queries. Today we'll build an **answers machine**.
+
+---
+
+## What We'll Build
+
+| Part | What | Time |
+|------|------|------|
+| 1 | DuckDB from Python | 10 min |
+| 2 | Text-to-SQL & the agentic loop | 15 min |
+| 3 | Context: skill file + semantic layer | 15 min |
+| 4 | Deterministic tools with PydanticAI | 20 min |
+| 5 | Distribute via FastMCP | 15 min |
+
+<Quiz
+  question="What's special about this dataset?"
+  options={[
+    "It's a single clean table",
+    "It has multiple layers with traps: raw (cents), staging, marts, and dead-end tables",
+    "It's a CSV file",
+  ]}
+  correct={1}
+  explanation="The Duckoffee database has raw tables (amounts in cents!), staging tables, clean marts, and dead-end tables that will trick an LLM. That's what makes semantic layers valuable."
+/>

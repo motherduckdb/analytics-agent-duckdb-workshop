@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+:root {
+  --bg: #f4efea;
+  --surface: #ffffff;
+  --text: #383838;
+  --muted: #a1a1a1;
+  --accent: #6fc2ff;
+  --green: #16aa98;
+  --yellow: #ffde00;
+  --red: #ff7169;
+  --grid: #e8e3de;
+  --snow: #f8f7f7;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ═══ BLOCK CONTENT — scoped typography ═══ */
+
+.block-content h1,
+.block-content h2,
+.block-content h3,
+.block-content h4 {
+  font-family: "Space Mono", "Space Grotesk", monospace;
+  color: var(--text);
+}
+.block-content h2 { font-size: 22px; font-weight: 700; margin: 0 0 12px 0; }
+.block-content h3 { font-size: 16px; font-weight: 700; margin: 16px 0 8px 0; }
+
+.block-content p { line-height: 1.65; margin: 8px 0; }
+
+.block-content a { color: var(--accent); text-decoration: none; }
+.block-content a:hover { text-decoration: underline; }
+
+.block-content strong { font-weight: 600; }
+.block-content em { font-style: italic; }
+
+/* ── Lists ── */
+.block-content ul,
+.block-content ol { padding-left: 24px; margin: 8px 0; }
+.block-content li { line-height: 1.65; margin: 4px 0; }
+
+/* ── Blockquotes ── */
+.block-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 8px 16px;
+  margin: 12px 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ── Tables ── */
+.block-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1.5px solid var(--grid);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 14px 0;
+  font-size: 13px;
+  background: var(--surface);
+}
+.block-content thead th {
+  background: var(--snow);
+  padding: 8px 14px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  font-family: "Space Mono", monospace;
+  border-bottom: 1.5px solid var(--grid);
+}
+.block-content tbody td {
+  padding: 7px 14px;
+  border-top: 1px solid var(--grid);
+  color: var(--text);
+}
+.block-content tbody tr:first-child td {
+  border-top: none;
+}
+.block-content tbody tr:nth-child(even) td {
+  background: var(--snow);
+}
+
+/* ── Inline code ── */
+.block-content code {
+  font-family: "Space Mono", monospace;
+  font-size: 0.88em;
+}
+.block-content :not(pre) > code {
+  background: var(--snow);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--grid);
+}
+
+/* ── Fenced code blocks (rehype-pretty-code output) ── */
+.block-content pre {
+  background: var(--text);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: "Space Mono", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1.5px solid var(--grid);
+}
+.block-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+}
+/* rehype-pretty-code language badge */
+.block-content pre [data-language]::before {
+  content: attr(data-language);
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-family: "Space Mono", monospace;
+}
+
+/* ── Horizontal rules (block separators — hidden) ── */
+.block-content hr { display: none; }
+
+/* ═══ FULLSCREEN MODE ═══ */
+
+.fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.fullscreen-overlay .block-content {
+  font-size: 16px;
+}
+.fullscreen-overlay .block-content h2 {
+  font-size: 28px;
+}
+.fullscreen-overlay .block-content pre {
+  font-size: 15px;
+}
+.fullscreen-overlay .block-content table {
+  font-size: 15px;
+}

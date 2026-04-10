@@ -1,0 +1,156 @@
+## MCP Separates Tools from the Agent
+
+Your tools work — but they're bundled in your script. MCP **separates tools from the agent** so anyone can use them.
+
+| Before (Part 4) | After (Part 5) |
+|-----------------|----------------|
+| Agent + tools in one script | Tools in MCP server |
+| Only you can use it | Any MCP client connects |
+| You pick the model | Client picks the model |
+
+<Tip>MCP is the USB-C port. Your agent is the device. The server has no model — just Python functions.</Tip>
+
+---
+
+## Build the MCP Server
+
+<CopyBlock label="mcp-server/server.py" text={`from fastmcp import FastMCP
+import duckdb, json
+from pathlib import Path
+
+DB_PATH = Path(__file__).parent.parent / "duckoffee.duckdb"
+mcp = FastMCP("Duckoffee Analytics")
+
+def get_con():
+    return duckdb.connect(str(DB_PATH), read_only=True)
+
+@mcp.tool()
+def query(sql: str) -> str:
+    """Execute a read-only SQL query on the Duckoffee database."""
+    try:
+        con = get_con()
+        rows = con.execute(sql).fetchall()
+        cols = [d[0] for d in con.description]
+        return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+    except Exception as e:
+        return f"Query error: {e}"
+
+@mcp.tool()
+def revenue_by_venue(year: int | None = None, city: str | None = None) -> str:
+    """Revenue by venue. Always uses orders mart (euros)."""
+    # Copy from Part 4
+    ...
+
+@mcp.tool()
+def top_customers(n: int = 10, customer_type: str | None = None) -> str:
+    """Top customers by lifetime spend."""
+    # Copy from Part 4
+    ...
+
+@mcp.tool()
+def search_tables(keyword: str) -> str:
+    """Search table and column descriptions."""
+    con = get_con()
+    pattern = f"%{keyword}%"
+    tables = con.execute(
+        "SELECT table_name, comment FROM duckdb_tables() WHERE comment ILIKE ?",
+        [pattern]).fetchall()
+    columns = con.execute(
+        "SELECT table_name, column_name, comment FROM duckdb_columns() WHERE comment ILIKE ?",
+        [pattern]).fetchall()
+    lines = [f"Table {t}: {c}" for t, c in tables]
+    lines += [f"Column {t}.{col}: {c}" for t, col, c in columns]
+    return "\\n".join(lines) or f"No matches for '{keyword}'."
+
+if __name__ == "__main__":
+    mcp.run()`} />
+
+---
+
+## Test Locally
+
+<CopyBlock label="FastMCP dev UI" text="fastmcp dev mcp-server/server.py" />
+
+Try:
+1. `search_tables("revenue")` — should warn about daily_revenue being stale
+2. `revenue_by_venue(2025)` — exact numbers
+3. `query("SELECT count(*) FROM orders")` — raw SQL
+
+---
+
+## PydanticAI as MCP Client
+
+An agent that discovers tools **from the server**:
+
+<CopyBlock label="agent_mcp.py" text={`import asyncio
+from pydantic_ai import Agent
+from pydantic_ai.toolsets.fastmcp import FastMCPToolset
+
+async def main():
+    toolset = FastMCPToolset("mcp-server/server.py")
+    agent = Agent(
+        "anthropic:claude-sonnet-4-20250514",
+        system_prompt=open("skill.md").read(),
+        toolsets=[toolset],
+    )
+    async with agent:
+        result = await agent.run("Revenue by venue for 2025, and who are the top 5 customers?")
+        print(result.output)
+
+asyncio.run(main())`} />
+
+**Zero tools defined in the agent.** PydanticAI discovered them from the MCP server.
+
+---
+
+## Wire to Any Client
+
+<CopyBlock label="Claude Code — .mcp.json" text={`{
+  "mcpServers": {
+    "duckoffee": {
+      "command": "python3",
+      "args": ["mcp-server/server.py"]
+    }
+  }
+}`} />
+
+Open Claude Desktop or Claude Code and ask: *"What's our revenue by venue?"*
+
+---
+
+## Simple Tools vs Smart Tools
+
+Our tools are <Badge color="#16AA98">deterministic</Badge> — pure Python. Some tools need a <Badge color="#FFDE00">specialized model</Badge>:
+
+| Tool type | Model on server? | Example |
+|-----------|:---:|---------|
+| Deterministic | No | `revenue_by_venue()` |
+| API call | No | `check_inventory()` |
+| Specialized AI | **Yes** | `analyze_video()` → Gemini Vision |
+| Embedding search | **Yes** | `semantic_search()` |
+
+<Tip>Client model = generalist (reasoning). Server model = specialist (vision, embeddings). Most tools don't need a model.</Tip>
+
+---
+
+## Checkpoint
+
+**You stopped building the agent. You started serving capabilities.**
+
+- **Skill** = flexibility (instructions the LLM follows)
+- **Tool** = determinism (same input → same output)
+- **MCP** = distribution (build once, any client connects)
+- **COMMENT ON** = traps become warnings
+
+From local to cloud: **MotherDuck MCP** is the managed version of what you just built.
+
+<Quiz
+  question="What does the MCP server provide?"
+  options={[
+    "The LLM model",
+    "The user interface",
+    "Tools, resources, and prompts — your business logic",
+  ]}
+  correct={2}
+  explanation="The MCP server provides tools (code), resources (context), and prompts (templates). The client brings the model and UI. You build the server, they bring their agent."
+/>
