@@ -32,4 +32,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: site/out
-          clean-exclude: pr-preview
+          clean-exclude: |
+            pr-preview
+            .nojekyll
