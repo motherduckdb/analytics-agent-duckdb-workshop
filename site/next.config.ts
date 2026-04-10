@@ -3,9 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath:
-    process.env.BASE_PATH ??
-    (process.env.NODE_ENV === "production" ? "/pycon-pydata-2026" : ""),
+  basePath: process.env.BASE_PATH ?? "",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: { unoptimized: true },
 };
