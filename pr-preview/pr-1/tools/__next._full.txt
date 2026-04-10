@@ -1,0 +1,77 @@
+1:"$Sreact.fragment"
+2:I[7563,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"PartTabs"]
+3:I[39756,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+4:I[37457,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+5:I[91560,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"PartPage"]
+21:I[68027,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"default",1]
+:HL["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0.3~u6d3m2nc7.css","style"]
+0:{"P":null,"c":["","tools"],"q":"","i":false,"f":[[["",{"children":["tools",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0.3~u6d3m2nc7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"h-full antialiased","children":["$","body",null,{"className":"min-h-full flex flex-col","children":[["$","header",null,{"style":{"background":"#FFFFFF","borderBottom":"1.5px solid #E8E3DE","padding":"12px 24px","display":"flex","alignItems":"center","justifyContent":"space-between"},"children":[["$","div",null,{"children":[["$","h1",null,{"style":{"fontSize":16,"fontWeight":700,"fontFamily":"'Space Mono', 'Space Grotesk', monospace","color":"#383838","margin":0},"children":"SQL is Dead, Long Live SQL"}],["$","p",null,{"style":{"fontSize":11,"color":"#A1A1A1","margin":0,"fontFamily":"'Inter', system-ui, sans-serif"},"children":"PyCon DE & PyData 2026 — 90 min workshop"}]]}],["$","span",null,{"style":{"fontSize":11,"color":"#A1A1A1","fontFamily":"'Space Mono', 'Space Grotesk', monospace"},"children":"motherduck.com"}]]}],["$","$L2",null,{}],["$","main",null,{"style":{"flex":1,"background":"#F4EFEA"},"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L5",null,{"title":"Part 4 — Deterministic Tools with PydanticAI","partId":"tools","children":[["$","h2",null,{"children":"Skill for Flexibility. Tools for Determinism."}],"\n",["$","p",null,{"children":["The skill handles 80% of questions. For the other 20% — auditable numbers — you need ",["$","strong",null,{"children":"code that always produces the same result"}],"."]}],"\n",["$","p",null,{"children":["The LLM decides ",["$","strong",null,{"children":"when"}]," to call a tool. The code decides ",["$","strong",null,{"children":"what"}]," happens."]}],"\n",["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Feature"}],["$","th",null,{"children":"Raw loop"}],["$","th",null,{"children":"PydanticAI"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":"Agentic loop"}],["$","td",null,{"children":["Manual ",["$","code",null,{"children":"while True"}]]}],["$","td",null,{"children":"Handled for you"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Tool definition"}],["$","td",null,{"children":["$","code",null,{"children":"if name == \"tool_a\": ..."}]}],["$","td",null,{"children":["$","code",null,{"children":"@agent.tool_plain"}]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Provider swap"}],["$","td",null,{"children":"Different SDK"}],["$","td",null,{"children":"One string change"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Retries"}],["$","td",null,{"children":"Manual"}],"$L6"]}]]}]]}],"\n","$L7","\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c"]}],["$L1d"],"$L1e"]}],{},null,false,null]},null,false,"$@1f"]},null,false,null],"$L20",false]],"m":"$undefined","G":["$21",["$L22"]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"QpP68kIZrG3WE8FkUkZ0e"}
+23:I[71153,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"CopyBlock"]
+25:I[71079,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"Quiz"]
+26:I[97367,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+27:"$Sreact.suspense"
+2a:I[97367,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"ViewportBoundary"]
+2c:I[97367,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"MetadataBoundary"]
+6:["$","td",null,{"children":"Built-in"}]
+7:["$","hr",null,{}]
+8:["$","h2",null,{"children":"Agent with PydanticAI"}]
+9:["$","$L23",null,{"label":"Create agent_tools.py","text":"from pydantic_ai import Agent\nimport duckdb, json\nfrom pathlib import Path\n\ncon = duckdb.connect(\"duckoffee.duckdb\", read_only=True)\n\nagent = Agent(\n  \"anthropic:claude-sonnet-4-20250514\",  # or \"ollama:gemma4:26b\"\n  system_prompt=Path(\"skill.md\").read_text(),\n)\n\n@agent.tool_plain\ndef query_duckdb(sql: str) -> str:\n  \"\"\"Execute a read-only SQL query on the Duckoffee database.\"\"\"\n  try:\n      result = con.execute(sql).fetchall()\n      cols = [desc[0] for desc in con.description]\n      return json.dumps({\"columns\": cols, \"rows\": result[:50]}, default=str)\n  except Exception as e:\n      return json.dumps({\"error\": str(e)})"}]
+a:["$","hr",null,{}]
+b:["$","h2",null,{"children":"Add: Revenue Tool"}]
+24:T477,@agent.tool_plain
+def revenue_by_venue(year: int | None = None, city: str | None = None) -> str:
+  """Revenue by venue with exact business rules. Always uses orders mart (euros)."""
+  params = []
+  where = []
+  if year:
+      where.append("extract(year FROM o.ordered_at) = ?")
+      params.append(year)
+  if city:
+      where.append("l.city = ?")
+      params.append(city)
+
+  where_sql = ("WHERE " + " AND ".join(where)) if where else ""
+
+  rows = con.execute(f"""
+      SELECT l.location_name, l.city,
+             count(*) AS orders,
+             round(sum(o.order_total), 2) AS revenue
+      FROM orders o
+      JOIN locations l ON o.location_id = l.location_id
+      {where_sql}
+      GROUP BY ALL ORDER BY revenue DESC
+  """, params).fetchall()
+
+  lines = ["Revenue by venue" + (f" ({year})" if year else "") + (f" in {city}" if city else "") + ":"]
+  total = 0
+  for name, city_val, count, rev in rows:
+      lines.append(f"  {name:<20} {city_val:<12} {count:>6} orders  {rev:>12,.2f} EUR")
+      total += rev
+  lines.append(f"  {'Total':<20} {'':<12} {sum(r[2] for r in rows):>6} orders  {total:>12,.2f} EUR")
+  return "\n".join(lines)c:["$","$L23",null,{"label":"Add to agent_tools.py","text":"$24"}]
+d:["$","hr",null,{}]
+e:["$","h2",null,{"children":"Add: Top Customers Tool"}]
+f:["$","$L23",null,{"label":"Add to agent_tools.py","text":"@agent.tool_plain\ndef top_customers(n: int = 10, customer_type: str | None = None) -> str:\n  \"\"\"Top N customers by lifetime spend. Uses pre-computed customers mart.\"\"\"\n  params = []\n  where = \"\"\n  if customer_type:\n      where = \"WHERE customer_type = ?\"\n      params.append(customer_type)\n  params.append(n)\n\n  rows = con.execute(f\"\"\"\n      SELECT full_name, customer_type, lifetime_spend, count_lifetime_orders\n      FROM customers {where}\n      ORDER BY lifetime_spend DESC LIMIT ?\n  \"\"\", params).fetchall()\n\n  lines = [f\"Top {n} customers\" + (f\" ({customer_type})\" if customer_type else \"\") + \":\"]\n  for name, ctype, spend, orders in rows:\n      lines.append(f\"  {name:<30} {ctype:<10} {spend:>10,.2f} EUR  ({orders} orders)\")\n  return \"\\n\".join(lines)"}]
+10:["$","hr",null,{}]
+11:["$","h2",null,{"children":"Add: Product Performance Tool"}]
+12:["$","$L23",null,{"label":"Add to agent_tools.py","text":"@agent.tool_plain\ndef product_performance(category: str | None = None) -> str:\n  \"\"\"Product performance with margin. Uses order_items mart.\"\"\"\n  params = []\n  where = \"\"\n  if category:\n      where = \"WHERE product_category = ?\"\n      params.append(category)\n\n  rows = con.execute(f\"\"\"\n      SELECT product_name, product_category,\n             count(*) AS times_sold,\n             round(avg(product_price), 2) AS avg_price,\n             round(avg(supply_cost), 2) AS avg_cost,\n             round(avg(product_price - supply_cost), 2) AS avg_margin\n      FROM order_items {where}\n      GROUP BY ALL ORDER BY times_sold DESC\n  \"\"\", params).fetchall()\n\n  lines = [f\"Product performance\" + (f\" ({category})\" if category else \"\") + \":\"]\n  lines.append(f\"  {'Product':<30} {'Cat':<10} {'Sold':>6} {'Price':>8} {'Cost':>8} {'Margin':>8}\")\n  for name, cat, sold, price, cost, margin in rows:\n      lines.append(f\"  {name:<30} {cat:<10} {sold:>6} {price:>8.2f} {cost:>8.2f} {margin:>8.2f}\")\n  return \"\\n\".join(lines)"}]
+13:["$","hr",null,{}]
+14:["$","h2",null,{"children":"Test Your Tools"}]
+15:["$","$L23",null,{"label":"Test directly (no model needed)","text":"python3 agent_tools.py"}]
+16:["$","$L23",null,{"label":"Test via agent","text":"python3 agent_tools.py \"Revenue by venue for 2025\"\npython3 agent_tools.py \"Top 5 returning customers\"\npython3 agent_tools.py \"What's the profit margin on beverages?\""}]
+17:["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":[["$","strong",null,{"children":"Direct call:"}]," ",["$","code",null,{"children":"revenue_by_venue(2025)"}]," → same numbers every time. ",["$","strong",null,{"children":"Via agent:"}]," the model picks the right tool automatically."]}]
+18:["$","hr",null,{}]
+19:["$","h2",null,{"children":"Swap Providers"}]
+1a:["$","$L23",null,{"label":"One string change","text":"agent = Agent(\"ollama:gemma4:26b\", system_prompt=Path(\"skill.md\").read_text())"}]
+1b:["$","p",null,{"children":"Same tools, same skill, different model."}]
+1c:["$","$L25",null,{"question":"Why use revenue_by_venue() instead of letting the LLM write SQL?","options":["The LLM can't write SQL","The tool always returns consistent, auditable results — same input, same output","It's faster"],"correct":1,"explanation":"Deterministic tools guarantee the same SQL runs every time. For financial reports and dashboards, consistency matters more than flexibility."}]
+1d:["$","script","script-0",{"src":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js","async":true,"nonce":"$undefined"}]
+1e:["$","$L26",null,{"children":["$","$27",null,{"name":"Next.MetadataOutlet","children":"$@28"}]}]
+29:[]
+1f:"$W29"
+20:["$","$1","h",{"children":[null,["$","$L2a",null,{"children":"$L2b"}],["$","div",null,{"hidden":true,"children":["$","$L2c",null,{"children":["$","$27",null,{"name":"Next.Metadata","children":"$L2d"}]}]}],null]}]
+22:["$","link","0",{"rel":"stylesheet","href":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0.3~u6d3m2nc7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+2b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+2e:I[27201,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
+28:null
+2d:[["$","title","0",{"children":"SQL is Dead, Long Live SQL — Workshop"}],["$","meta","1",{"name":"description","content":"Build an analytics agent with DuckDB, PydanticAI, and MCP. PyCon DE & PyData 2026."}],["$","link","2",{"rel":"icon","href":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/favicon.ico?favicon.0x3dzn~oxb6tn.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L2e","3",{}]]

@@ -1,0 +1,62 @@
+1:"$Sreact.fragment"
+2:I[91560,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"PartPage"]
+3:I[71153,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"CopyBlock"]
+4:I[97115,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"AgenticLoop"]
+17:I[71079,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js"],"Quiz"]
+18:I[97367,["/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/16wg6jci6odx..js","/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+19:"$Sreact.suspense"
+5:T5e2,from openai import OpenAI  # works with Ollama
+import duckdb, json
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+MODEL = "gemma4:26b"
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+tools = [{"type": "function", "function": {
+  "name": "query_duckdb",
+  "description": "Execute a read-only SQL query on the Duckoffee database.",
+  "parameters": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]},
+}}]
+
+def run_tool(name, args):
+  if name == "query_duckdb":
+      try:
+          rows = con.execute(args["sql"]).fetchall()
+          cols = [d[0] for d in con.description]
+          return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+      except Exception as e:
+          return json.dumps({"error": str(e)})
+
+def ask(question):
+  messages = [{"role": "user", "content": question}]
+  while True:
+      response = client.chat.completions.create(model=MODEL, tools=tools, messages=messages)
+      choice = response.choices[0]
+      messages.append(choice.message)
+      if choice.finish_reason != "tool_calls":
+          return choice.message.content
+      for call in choice.message.tool_calls:
+          args = json.loads(call.function.arguments)
+          print(f"  🔧 {call.function.name}: {args.get('sql', '')[:70]}")
+          result = run_tool(call.function.name, args)
+          messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
+
+print(ask("What are the top 5 best-selling products?"))0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"title":"Part 2 — Text-to-SQL & The Agentic Loop","partId":"loop","children":[["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#FFDE0022","color":"#FFDE00","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 1"}]," Copy-Paste"]}],"\n",["$","p",null,{"children":"Paste your schema into a chat, ask a question, copy the SQL back into DuckDB."}],"\n",["$","$L3",null,{"label":"Start ollama","text":"ollama run gemma4:26b"}],"\n",["$","p",null,{"children":[["$","strong",null,{"children":"You"}]," are the glue — copying, pasting, fixing errors."]}],"\n",["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":"Still useful for one-offs. But not for repeated analytics."}],"\n",["$","hr",null,{}],"\n",["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#16AA9822","color":"#16AA98","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 2"}]," Agentic Clients"]}],"\n",["$","p",null,{"children":"opencode and Claude Code have the loop built in. The model runs bash, reads output, iterates."}],"\n",["$","$L3",null,{"label":"With opencode (Ollama)","text":"opencode"}],"\n",["$","$L3",null,{"label":"With Claude Code (Anthropic)","text":"claude"}],"\n",["$","p",null,{"children":"Then:"}],"\n",["$","$L3",null,{"label":"Prompt","text":"You have a DuckDB database at duckoffee.duckdb.\nQuery with: duckdb duckoffee.duckdb -c \"SQL HERE\"\nExplore the schema, then tell me: what are the top 5 best-selling products?"}],"\n",["$","hr",null,{}],"\n",["$","h2",null,{"children":"Watch It Work"}],"\n",["$","p",null,{"children":["The agent runs ",["$","code",null,{"children":"SHOW TABLES"}],", ",["$","code",null,{"children":"DESCRIBE"}],", writes SQL, executes, reads errors, adjusts. You type one question, it does 5-10 steps."]}],"\n",["$","p",null,{"children":"Try:"}],"\n",["$","$L3",null,{"label":"Harder questions","text":"What's the average order value?\nWhich venue has the highest revenue?\nHow many repeat customers do we have?"}],"\n",["$","p",null,{"children":["On well-structured schemas, this is a ",["$","strong",null,{"children":"solved problem"}]," — 85-95% accuracy."]}],"\n",["$","hr",null,{}],"\n",["$","h2",null,{"children":"The Agentic Loop — Visualized"}],"\n",["$","p",null,{"children":"Watch the full cycle: prompt → tool call → error → self-correct → success."}],"\n",["$","$L4",null,{}],"\n",["$","hr",null,{}],"\n",["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#6FC2FF22","color":"#6FC2FF","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 3"}]," Build the Loop Yourself"]}],"\n",["$","p",null,{"children":["~35 lines of Python. The agentic loop is just a ",["$","code",null,{"children":"while"}]," loop:"]}],"\n",["$","$L3",null,{"label":"Create agent_loop.py","text":"$5"}],"\n","$L6","\n","$L7","\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14"]}],["$L15"],"$L16"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"QpP68kIZrG3WE8FkUkZ0e"}
+6:["$","$L3",null,{"label":"Run it","text":"python3 agent_loop.py"}]
+7:["$","hr",null,{}]
+8:["$","h2",null,{"children":"Now Watch It Fail"}]
+9:["$","p",null,{"children":["The agent will confidently pick the ",["$","strong",null,{"children":"wrong"}]," table. Try these:"]}]
+a:["$","$L3",null,{"label":"Trap questions","text":"What's the average order value?"}]
+b:["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":["The agent will likely query ",["$","code",null,{"children":"raw_orders.order_total"}]," and return ~16,860 — because raw_orders stores amounts in ",["$","strong",null,{"children":"cents"}],", not euros. The correct answer is 168.60 euros from the ",["$","code",null,{"children":"orders"}]," table."]}]
+c:["$","$L3",null,{"label":"More traps","text":"Which venue has the highest total revenue?\nHow many repeat customers do we have?\nWhat's the daily revenue trend for the last 3 months?"}]
+d:["$","p",null,{"children":"Common failures:"}]
+e:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Cents vs euros"}],": ",["$","code",null,{"children":"raw_orders"}]," is 100x too high"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Column names"}],": ",["$","code",null,{"children":"raw_orders.customer"}]," vs ",["$","code",null,{"children":"orders.customer_id"}],", ",["$","code",null,{"children":"store_id"}]," vs ",["$","code",null,{"children":"location_id"}]]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Enum values"}],": no ",["$","code",null,{"children":"'repeat'"}]," in customer_type — it's ",["$","code",null,{"children":"'returning'"}]]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Dead-end tables"}],": ",["$","code",null,{"children":"daily_revenue"}]," only has 3 of 6 venues, stops at 2025"]}],"\n"]}]
+f:["$","hr",null,{}]
+10:["$","h2",null,{"children":"What's Solved, What's Left"}]
+11:["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Solved"}],["$","th",null,{"children":"Who solved it"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":"The agentic loop"}],["$","td",null,{"children":"opencode, Claude Code, or ~35 lines of Python"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Text-to-SQL (clean schemas)"}],["$","td",null,{"children":"The model — 85-95% accuracy"}]]}]]}]]}]
+12:["$","p",null,{"children":[["$","strong",null,{"children":"What breaks it"}],": your real data. Traps the model can't see: cents vs euros, stale tables, ambiguous column names."]}]
+13:["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"You build"}],["$","th",null,{"children":"Why"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":"Skill file (Part 3)"}],["$","td",null,{"children":"Which tables to use, which to avoid"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Semantic layer (Part 3)"}],["$","td",null,{"children":"What columns actually mean"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Deterministic tools (Part 4)"}],["$","td",null,{"children":"Exact, auditable results"}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"MCP server (Part 5)"}],["$","td",null,{"children":"Distribute to any client"}]]}]]}]]}]
+14:["$","$L17",null,{"question":"Why did the agent return ~16,860 for average order value?","options":["The database is corrupted","It queried raw_orders where amounts are stored in cents, not euros","It used the wrong aggregation function"],"correct":1,"explanation":"raw_orders stores amounts in cents (integers). The orders mart table has the same data in euros (doubles). Without context, the LLM picks whichever table it finds first."}]
+15:["$","script","script-0",{"src":"/analytics-agent-duckdb-workshop/pr-preview/pr-1/_next/static/chunks/0lk0vknu63gqt.js","async":true}]
+16:["$","$L18",null,{"children":["$","$19",null,{"name":"Next.MetadataOutlet","children":"$@1a"}]}]
+1a:null
