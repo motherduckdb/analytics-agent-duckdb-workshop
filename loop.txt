@@ -1,0 +1,95 @@
+1:"$Sreact.fragment"
+2:I[7563,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"PartTabs"]
+3:I[39756,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+4:I[37457,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+5:I[91560,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0t7kvokgfkex3.js"],"PartPage"]
+6:I[71153,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0t7kvokgfkex3.js"],"CopyBlock"]
+2c:I[68027,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"default",1]
+:HL["/_next/static/chunks/0~orz3tg97j6z.css","style"]
+0:{"P":null,"c":["","loop"],"q":"","i":false,"f":[[["",{"children":["loop",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0~orz3tg97j6z.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/0c52u-3sj_fon.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/0d3shmwh5_nmn.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"h-full antialiased","children":["$","body",null,{"className":"min-h-full flex flex-col","children":[["$","header",null,{"style":{"background":"#FFFFFF","borderBottom":"1.5px solid #E8E3DE","padding":"12px 24px","display":"flex","alignItems":"center","justifyContent":"space-between"},"children":[["$","div",null,{"children":[["$","h1",null,{"style":{"fontSize":16,"fontWeight":700,"fontFamily":"'Space Mono', 'Space Grotesk', monospace","color":"#383838","margin":0},"children":"SQL is Dead, Long Live SQL"}],["$","p",null,{"style":{"fontSize":11,"color":"#A1A1A1","margin":0,"fontFamily":"'Inter', system-ui, sans-serif"},"children":"PyCon DE & PyData 2026 — 90 min workshop"}]]}],["$","span",null,{"style":{"fontSize":11,"color":"#A1A1A1","fontFamily":"'Space Mono', 'Space Grotesk', monospace"},"children":"motherduck.com"}]]}],["$","$L2",null,{}],["$","main",null,{"style":{"flex":1,"background":"#F4EFEA"},"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L5",null,{"title":"Part 2 — Text-to-SQL & The Agentic Loop","partId":"loop","children":[["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#FFDE0022","color":"#FFDE00","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 1"}]," Copy-Paste"]}],"\n",["$","p",null,{"children":"Paste your schema into a chat, ask a question, copy the SQL back into DuckDB."}],"\n",["$","$L6",null,{"label":"Start ollama","text":"ollama run gemma4:26b"}],"\n",["$","p",null,{"children":[["$","strong",null,{"children":"You"}]," are the glue — copying, pasting, fixing errors."]}],"\n",["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":"Still useful for one-offs. But not for repeated analytics."}],"\n",["$","hr",null,{}],"\n",["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#16AA9822","color":"#16AA98","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 2"}]," Agentic Clients"]}],"\n",["$","p",null,{"children":"opencode and Claude Code have the loop built in. The model runs bash, reads output, iterates."}],"\n",["$","$L6",null,{"label":"With opencode (Ollama)","text":"opencode"}],"\n",["$","$L6",null,{"label":"With Claude Code (Anthropic)","text":"claude"}],"\n","$L7","\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27"]}],["$L28"],"$L29"]}],{},null,false,null]},null,false,"$@2a"]},null,false,null],"$L2b",false]],"m":"$undefined","G":["$2c",["$L2d"]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"qsQwbLg3q1yicoZZk9XLS"}
+2e:I[28015,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0t7kvokgfkex3.js"],"Exercise"]
+2f:I[97115,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0t7kvokgfkex3.js"],"AgenticLoop"]
+31:I[71079,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0t7kvokgfkex3.js"],"Quiz"]
+32:I[97367,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+33:"$Sreact.suspense"
+36:I[97367,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"ViewportBoundary"]
+38:I[97367,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"MetadataBoundary"]
+7:["$","p",null,{"children":"Then just ask — the agent is smart enough to figure out the schema:"}]
+8:["$","$L6",null,{"label":"Prompt","text":"Get me some analytics about this duckdb db duckoffee.duckdb using uv"}]
+9:["$","$L2e",null,{"title":"Try it yourself","minutes":5,"children":["$","p",null,{"children":"Pick opencode or Claude Code. Ask 2-3 questions about the Duckoffee data. Watch how the agent explores the schema on its own."}]}]
+a:["$","hr",null,{}]
+b:["$","h2",null,{"children":"Watch It Work"}]
+c:["$","p",null,{"children":["The agent runs ",["$","code",null,{"children":"SHOW TABLES"}],", ",["$","code",null,{"children":"DESCRIBE"}],", writes SQL, executes, reads errors, adjusts. You type one question, it does 5-10 steps."]}]
+d:["$","p",null,{"children":"Try:"}]
+e:["$","$L6",null,{"label":"Harder questions","text":"What's the average order value?\nWhich venue has the highest revenue?\nWhat are the top 5 best-selling products?"}]
+f:["$","p",null,{"children":["On well-structured schemas, this is a ",["$","strong",null,{"children":"solved problem"}]," — 85-95% accuracy."]}]
+10:["$","hr",null,{}]
+11:["$","h2",null,{"children":"The Agentic Loop — Visualized"}]
+12:["$","p",null,{"children":"Watch the full cycle: prompt → tool call → error → self-correct → success."}]
+13:["$","$L2f",null,{}]
+14:["$","hr",null,{}]
+15:["$","h2",null,{"children":[["$","span",null,{"style":{"display":"inline-block","padding":"2px 10px","borderRadius":4,"fontSize":11,"fontWeight":700,"background":"#6FC2FF22","color":"#6FC2FF","fontFamily":"'Inter', system-ui, sans-serif"},"children":"Era 3"}]," Build the Loop Yourself"]}]
+16:["$","p",null,{"children":["~35 lines of Python. The agentic loop is just a ",["$","code",null,{"children":"while"}]," loop:"]}]
+30:T5e3,from openai import OpenAI  # works with Ollama
+import duckdb, json
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+MODEL = "gemma4:26b"
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+tools = [{"type": "function", "function": {
+  "name": "query_duckdb",
+  "description": "Execute a read-only SQL query on the Duckoffee database.",
+  "parameters": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]},
+}}]
+
+def run_tool(name, args):
+  if name == "query_duckdb":
+      try:
+          rows = con.execute(args["sql"]).fetchall()
+          cols = [d[0] for d in con.description]
+          return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+      except Exception as e:
+          return json.dumps({"error": str(e)})
+
+def ask(question):
+  messages = [{"role": "user", "content": question}]
+  while True:
+      response = client.chat.completions.create(model=MODEL, tools=tools, messages=messages)
+      choice = response.choices[0]
+      messages.append(choice.message)
+      if choice.finish_reason != "tool_calls":
+          return choice.message.content
+      for call in choice.message.tool_calls:
+          args = json.loads(call.function.arguments)
+          print(f"  tool: {call.function.name}: {args.get('sql', '')[:70]}")
+          result = run_tool(call.function.name, args)
+          messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
+
+print(ask("What are the top 5 best-selling products?"))17:["$","$L6",null,{"label":"Create agent_loop.py","text":"$30"}]
+18:["$","$L6",null,{"label":"Run it","text":"uv run python agent_loop.py"}]
+19:["$","hr",null,{}]
+1a:["$","h2",null,{"children":"Now Watch It Fail"}]
+1b:["$","p",null,{"children":["The agent will confidently pick the ",["$","strong",null,{"children":"wrong"}]," table. Try these:"]}]
+1c:["$","$L6",null,{"label":"Trap question 1 — Cents vs euros (C01)","text":"What's the average order value?"}]
+1d:["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":["The agent will likely query ",["$","code",null,{"children":"raw_orders.order_total"}]," and return ",["$","strong",null,{"children":"~17,000"}]," — because raw_orders stores amounts in ",["$","strong",null,{"children":"cents"}],", not euros. The correct answer is ",["$","strong",null,{"children":"169.90 euros"}]," from the ",["$","code",null,{"children":"orders"}]," table."]}]
+1e:["$","$L6",null,{"label":"Trap question 2 — Column renames (C04)","text":"Which venue has the highest total revenue?"}]
+1f:["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":["Without context, the agent may query raw_orders (cents) and group by ",["$","code",null,{"children":"store_id"}]," instead of joining to locations. Trap answer: \"store_id 5 with 110,976,982\". Correct answer: ",["$","strong",null,{"children":"Quack Quarter with 1,109,769.82 euros"}],"."]}]
+20:["$","$L6",null,{"label":"Trap question 3 — Enum values (C06)","text":"How many repeat customers do we have?"}]
+21:["$","div",null,{"style":{"marginTop":16,"marginBottom":16,"padding":"10px 14px","background":"#6FC2FF12","borderLeft":"3px solid #6FC2FF","borderRadius":"0 6px 6px 0","fontSize":13,"color":"#383838","lineHeight":1.5,"fontFamily":"'Inter', system-ui, sans-serif"},"children":["The agent will filter for ",["$","code",null,{"children":"customer_type = 'repeat'"}]," and get ",["$","strong",null,{"children":"0 results"}],". The actual value is ",["$","code",null,{"children":"'returning'"}]," — there are ",["$","strong",null,{"children":"7,759 returning customers"}],"."]}]
+22:["$","$L2e",null,{"title":"Break it","minutes":5,"children":["$","p",null,{"children":"Try these traps yourself. Can you also find wrong answers for: \"How many orders are worth more than 100 euros?\" (C02) and \"Show me all orders for customer 42\" (C03)?"}]}]
+23:["$","hr",null,{}]
+24:["$","h2",null,{"children":"The Full Trap Sheet"}]
+25:["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Trap"}],["$","th",null,{"children":"What happens"}],["$","th",null,{"children":"Correct answer"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":[["$","code",null,{"children":"raw_orders"}]," amounts in cents"]}],["$","td",null,{"children":"Revenue is 100x too high"}],["$","td",null,{"children":["Use ",["$","code",null,{"children":"orders"}]," (euros)"]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":[["$","code",null,{"children":"raw_orders.customer"}]," (no ",["$","code",null,{"children":"_id"}],")"]}],["$","td",null,{"children":"Silent wrong joins"}],["$","td",null,{"children":["Use ",["$","code",null,{"children":"orders.customer_id"}]]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"raw_orders.store_id"}]}],["$","td",null,{"children":["Not ",["$","code",null,{"children":"location_id"}]]}],["$","td",null,{"children":["Use ",["$","code",null,{"children":"orders.location_id"}]]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"customer_type = 'repeat'"}]}],["$","td",null,{"children":"0 results"}],["$","td",null,{"children":["It's ",["$","code",null,{"children":"'returning'"}]," (7,759)"]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":[["$","code",null,{"children":"daily_revenue"}]," table"]}],["$","td",null,{"children":"Only 5 of 20 venues, no 2026 data"}],["$","td",null,{"children":["Compute from ",["$","code",null,{"children":"orders"}]]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"customer_segments"}]}],["$","td",null,{"children":"Only 6k of 12k customers"}],["$","td",null,{"children":["Derive from ",["$","code",null,{"children":"customers"}]," mart"]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"order_facts.total"}]}],["$","td",null,{"children":"Actually subtotal, not order_total"}],["$","td",null,{"children":["Use ",["$","code",null,{"children":"orders.order_total"}]]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"raw_legacy_invoices"}]}],["$","td",null,{"children":"SAP-style column names (AMTTTL, STSCODE)"}],["$","td",null,{"children":["Use ",["$","code",null,{"children":"stg_legacy_invoices"}]]}]]}]]}]]}]
+26:["$","p",null,{"children":[["$","strong",null,{"children":"Next:"}]," we add ",["$","strong",null,{"children":"semantic context"}]," — a skill file + database comments — so the model knows which tables to trust."]}]
+27:["$","$L31",null,{"question":"Why did the agent return ~17,000 for average order value?","options":["The database is corrupted","It queried raw_orders where amounts are in cents, not euros","It used the wrong aggregation function"],"correct":1,"explanation":"raw_orders stores amounts in cents (integers). The orders mart table has the same data in euros (doubles). Without context, the LLM picks whichever table it finds first."}]
+28:["$","script","script-0",{"src":"/_next/static/chunks/0t7kvokgfkex3.js","async":true,"nonce":"$undefined"}]
+29:["$","$L32",null,{"children":["$","$33",null,{"name":"Next.MetadataOutlet","children":"$@34"}]}]
+35:[]
+2a:"$W35"
+2b:["$","$1","h",{"children":[null,["$","$L36",null,{"children":"$L37"}],["$","div",null,{"hidden":true,"children":["$","$L38",null,{"children":["$","$33",null,{"name":"Next.Metadata","children":"$L39"}]}]}],null]}]
+2d:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0~orz3tg97j6z.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+37:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+3a:I[27201,["/_next/static/chunks/0c52u-3sj_fon.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
+34:null
+39:[["$","title","0",{"children":"SQL is Dead, Long Live SQL — Workshop"}],["$","meta","1",{"name":"description","content":"Build an analytics agent with DuckDB, PydanticAI, and MCP. PyCon DE & PyData 2026."}],["$","link","2",{"rel":"icon","href":"/favicon.ico?favicon.0a--90pkt8egz.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L3a","3",{}]]
