@@ -1,0 +1,145 @@
+## <Badge color="#FFDE00">Era 1</Badge> Copy-Paste
+
+Paste your schema into a chat, ask a question, copy the SQL back into DuckDB.
+
+<CopyBlock label="Start ollama" text="ollama run gemma4:26b" />
+
+**You** are the glue — copying, pasting, fixing errors.
+
+<Tip>Still useful for one-offs. But not for repeated analytics.</Tip>
+
+---
+
+## <Badge color="#16AA98">Era 2</Badge> Agentic Clients
+
+opencode and Claude Code have the loop built in. The model runs bash, reads output, iterates.
+
+<CopyBlock label="With opencode (Ollama)" text="opencode" />
+
+<CopyBlock label="With Claude Code (Anthropic)" text="claude" />
+
+Then just ask — the agent is smart enough to figure out the schema:
+
+<CopyBlock label="Prompt" text={`Get me some analytics about this duckdb db duckoffee.duckdb using uv`} />
+
+<Exercise title="Try it yourself" minutes={5}>
+  Pick opencode or Claude Code. Ask 2-3 questions about the Duckoffee data. Watch how the agent explores the schema on its own.
+</Exercise>
+
+---
+
+## Watch It Work
+
+The agent runs `SHOW TABLES`, `DESCRIBE`, writes SQL, executes, reads errors, adjusts. You type one question, it does 5-10 steps.
+
+Try:
+
+<CopyBlock label="Harder questions" text={`What's the average order value?
+Which venue has the highest revenue?
+What are the top 5 best-selling products?`} />
+
+On well-structured schemas, this is a **solved problem** — 85-95% accuracy.
+
+---
+
+## The Agentic Loop — Visualized
+
+Watch the full cycle: prompt &rarr; tool call &rarr; error &rarr; self-correct &rarr; success.
+
+<AgenticLoop />
+
+---
+
+## <Badge color="#6FC2FF">Era 3</Badge> Build the Loop Yourself
+
+~35 lines of Python. The agentic loop is just a `while` loop:
+
+<CopyBlock label="Create agent_loop.py" text={`from openai import OpenAI  # works with Ollama
+import duckdb, json
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+MODEL = "gemma4:26b"
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+tools = [{"type": "function", "function": {
+    "name": "query_duckdb",
+    "description": "Execute a read-only SQL query on the Duckoffee database.",
+    "parameters": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]},
+}}]
+
+def run_tool(name, args):
+    if name == "query_duckdb":
+        try:
+            rows = con.execute(args["sql"]).fetchall()
+            cols = [d[0] for d in con.description]
+            return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+        except Exception as e:
+            return json.dumps({"error": str(e)})
+
+def ask(question):
+    messages = [{"role": "user", "content": question}]
+    while True:
+        response = client.chat.completions.create(model=MODEL, tools=tools, messages=messages)
+        choice = response.choices[0]
+        messages.append(choice.message)
+        if choice.finish_reason != "tool_calls":
+            return choice.message.content
+        for call in choice.message.tool_calls:
+            args = json.loads(call.function.arguments)
+            print(f"  tool: {call.function.name}: {args.get('sql', '')[:70]}")
+            result = run_tool(call.function.name, args)
+            messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
+
+print(ask("What are the top 5 best-selling products?"))`} />
+
+<CopyBlock label="Run it" text="uv run python agent_loop.py" />
+
+---
+
+## Now Watch It Fail
+
+The agent will confidently pick the **wrong** table. Try these:
+
+<CopyBlock label="Trap question 1 — Cents vs euros (C01)" text={`What's the average order value?`} />
+
+<Tip>The agent will likely query `raw_orders.order_total` and return **~17,000** — because raw_orders stores amounts in **cents**, not euros. The correct answer is **169.90 euros** from the `orders` table.</Tip>
+
+<CopyBlock label="Trap question 2 — Column renames (C04)" text={`Which venue has the highest total revenue?`} />
+
+<Tip>Without context, the agent may query raw_orders (cents) and group by `store_id` instead of joining to locations. Trap answer: "store_id 5 with 110,976,982". Correct answer: **Quack Quarter with 1,109,769.82 euros**.</Tip>
+
+<CopyBlock label="Trap question 3 — Enum values (C06)" text={`How many repeat customers do we have?`} />
+
+<Tip>The agent will filter for `customer_type = 'repeat'` and get **0 results**. The actual value is `'returning'` — there are **7,759 returning customers**.</Tip>
+
+<Exercise title="Break it" minutes={5}>
+  Try these traps yourself. Can you also find wrong answers for: "How many orders are worth more than 100 euros?" (C02) and "Show me all orders for customer 42" (C03)?
+</Exercise>
+
+---
+
+## The Full Trap Sheet
+
+| Trap | What happens | Correct answer |
+|------|-------------|---------------|
+| `raw_orders` amounts in cents | Revenue is 100x too high | Use `orders` (euros) |
+| `raw_orders.customer` (no `_id`) | Silent wrong joins | Use `orders.customer_id` |
+| `raw_orders.store_id` | Not `location_id` | Use `orders.location_id` |
+| `customer_type = 'repeat'` | 0 results | It's `'returning'` (7,759) |
+| `daily_revenue` table | Only 5 of 20 venues, no 2026 data | Compute from `orders` |
+| `customer_segments` | Only 6k of 12k customers | Derive from `customers` mart |
+| `order_facts.total` | Actually subtotal, not order_total | Use `orders.order_total` |
+| `raw_legacy_invoices` | SAP-style column names (AMTTTL, STSCODE) | Use `stg_legacy_invoices` |
+
+**Next:** we add **semantic context** — a skill file + database comments — so the model knows which tables to trust.
+
+<Quiz
+  question="Why did the agent return ~17,000 for average order value?"
+  options={[
+    "The database is corrupted",
+    "It queried raw_orders where amounts are in cents, not euros",
+    "It used the wrong aggregation function",
+  ]}
+  correct={1}
+  explanation="raw_orders stores amounts in cents (integers). The orders mart table has the same data in euros (doubles). Without context, the LLM picks whichever table it finds first."
+/>
