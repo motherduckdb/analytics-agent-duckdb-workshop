@@ -22,7 +22,7 @@ from pathlib import Path
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
 agent = Agent(
-    "anthropic:claude-sonnet-4-20250514",  # or "ollama:gemma4:26b"
+    "anthropic:claude-sonnet-4-20250514",  # or "ollama:gemma4:latest"
     system_prompt=Path("skill.md").read_text(),
 )
 
@@ -152,7 +152,7 @@ uv run python agent_tools.py "What's the profit margin on beverages?"`} />
 
 ## Swap Providers
 
-<CopyBlock label="One string change" text={`agent = Agent("ollama:gemma4:26b", system_prompt=Path("skill.md").read_text())`} />
+<CopyBlock label="One string change" text={`agent = Agent("ollama:gemma4:latest", system_prompt=Path("skill.md").read_text())`} />
 
 Same tools, same skill, different model.
 

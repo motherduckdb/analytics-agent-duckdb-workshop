@@ -2,7 +2,7 @@
 
 Paste your schema into a chat, ask a question, copy the SQL back into DuckDB.
 
-<CopyBlock label="Start ollama" text="ollama run gemma4:26b" />
+<CopyBlock label="Start ollama" text="ollama run gemma4:latest" />
 
 **You** are the glue — copying, pasting, fixing errors.
 
@@ -58,7 +58,7 @@ Watch the full cycle: prompt &rarr; tool call &rarr; error &rarr; self-correct &
 import duckdb, json
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
-MODEL = "gemma4:26b"
+MODEL = "gemma4:latest"
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
 tools = [{"type": "function", "function": {

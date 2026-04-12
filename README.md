@@ -26,7 +26,7 @@ Requires: [Docker](https://docs.docker.com/get-docker/) and [uv](https://docs.as
 ```bash
 cd workshop
 make setup          # install Python deps
-make pull           # pull Gemma 4 via Ollama (17 GB — needs bandwidth)
+make pull           # pull Gemma 4 via Ollama (9.6 GB — needs bandwidth)
 ```
 
 Uses **Ollama + Gemma 4** (fully local, no API key) and **opencode** as the agentic CLI.
@@ -53,7 +53,7 @@ claude
 You can use any combination:
 - **Model**: Anthropic API (Claude) or Ollama (Gemma 4, fully local)
 - **Agentic CLI**: Claude Code (Anthropic) or opencode (Ollama)
-- **Python agent**: PydanticAI works with both (`"anthropic:claude-sonnet-4-20250514"` or `"ollama:gemma4:26b"`)
+- **Python agent**: PydanticAI works with both (`"anthropic:claude-sonnet-4-20250514"` or `"ollama:gemma4:latest"`)
 
 ## Workshop Outline
 

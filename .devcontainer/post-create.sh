@@ -30,15 +30,15 @@ cat > ~/.config/opencode/opencode.json << 'EOF'
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
-        "gemma4:26b": {
-          "name": "gemma4:26b",
+        "gemma4:latest": {
+          "name": "gemma4:latest",
           "contextWindow": 131072,
           "defaultTemperature": 0.7
         }
       }
     }
   },
-  "model": "ollama/gemma4:26b"
+  "model": "ollama/gemma4:latest"
 }
 EOF
 
@@ -58,10 +58,10 @@ if [ -n "${CODESPACES:-}" ]; then
         curl -sf http://localhost:11434/api/tags > /dev/null 2>&1 && break
         sleep 2
     done
-    ollama pull gemma4:26b
+    ollama pull gemma4:latest
     kill $OLLAMA_PID 2>/dev/null || true
 else
-    echo "==> Local environment detected — skipping model pull (17GB)."
+    echo "==> Local environment detected — skipping model pull (9.6GB)."
     echo "    Run 'make pull' when you have good bandwidth."
 fi
 
