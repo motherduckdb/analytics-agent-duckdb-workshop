@@ -2,7 +2,8 @@
 # post-create.sh — runs once after the container is created
 set -euo pipefail
 
-WORKSHOP_DIR=/workspace/workshop
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSHOP_DIR="$(dirname "$SCRIPT_DIR")/workshop"
 
 echo "==> Setting up workshop environment..."
 

@@ -4,8 +4,7 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/workspace/workshop",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/workshop",
   "hostRequirements": {
     "cpus": 8,
     "memory": "32gb",
@@ -22,8 +21,8 @@
       "onAutoForward": "ignore"
     }
   },
-  "postCreateCommand": "bash /workspace/.devcontainer/post-create.sh",
-  "postStartCommand": "bash /workspace/.devcontainer/post-start.sh",
+  "postCreateCommand": "bash ../.devcontainer/post-create.sh",
+  "postStartCommand": "bash ../.devcontainer/post-start.sh",
   "customizations": {
     "vscode": {
       "settings": {
