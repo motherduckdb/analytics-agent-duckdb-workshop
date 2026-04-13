@@ -30,10 +30,10 @@ body {
   font-family: "Space Mono", "Space Grotesk", monospace;
   color: var(--text);
 }
-.block-content h2 { font-size: 22px; font-weight: 700; margin: 0 0 12px 0; }
-.block-content h3 { font-size: 16px; font-weight: 700; margin: 16px 0 8px 0; }
+.block-content h2 { font-size: 30px; font-weight: 700; margin: 0 0 16px 0; }
+.block-content h3 { font-size: 20px; font-weight: 700; margin: 20px 0 10px 0; }
 
-.block-content p { line-height: 1.65; margin: 8px 0; }
+.block-content p { line-height: 1.65; margin: 10px 0; }
 
 .block-content a { color: var(--accent); text-decoration: none; }
 .block-content a:hover { text-decoration: underline; }
@@ -63,16 +63,16 @@ body {
   border: 1.5px solid var(--grid);
   border-radius: 8px;
   overflow: hidden;
-  margin: 14px 0;
-  font-size: 13px;
+  margin: 18px 0;
+  font-size: 16px;
   background: var(--surface);
 }
 .block-content thead th {
   background: var(--snow);
-  padding: 8px 14px;
+  padding: 10px 16px;
   text-align: left;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--muted);
@@ -80,7 +80,7 @@ body {
   border-bottom: 1.5px solid var(--grid);
 }
 .block-content tbody td {
-  padding: 7px 14px;
+  padding: 9px 16px;
   border-top: 1px solid var(--grid);
   color: var(--text);
 }
@@ -108,19 +108,19 @@ body {
   background: var(--text);
   color: #e6edf3;
   border-radius: 8px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   font-family: "Space Mono", monospace;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.7;
   overflow-x: auto;
-  margin: 12px 0;
+  margin: 14px 0;
   border: 1.5px solid var(--grid);
 }
 .block-content pre code {
   background: none;
   border: none;
   padding: 0;
-  font-size: 13px;
+  font-size: 15px;
   color: inherit;
 }
 /* rehype-pretty-code language badge */
@@ -138,17 +138,5 @@ body {
 /* ── Horizontal rules (block separators — hidden) ── */
 .block-content hr { display: none; }
 
-/* ═══ FULLSCREEN MODE ═══
-   Only the backdrop changes — the slide card keeps the same width, height,
-   and typography as windowed mode for pixel-consistent authoring. */
-
-.fullscreen-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--bg);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+/* Fullscreen: PresentationShell hides the header/tab chrome, and the
+   slide card flex-fills the viewport — nothing else to do in CSS. */

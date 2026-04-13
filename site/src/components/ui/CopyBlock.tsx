@@ -45,12 +45,12 @@ export function CopyBlock({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            marginBottom: 6,
+            marginBottom: 8,
           }}
         >
           <span
             style={{
-              fontSize: 12,
+              fontSize: 15,
               fontWeight: 700,
               color: md.accent,
               fontFamily: md.titleFont,
@@ -60,7 +60,7 @@ export function CopyBlock({
           </span>
           <span
             style={{
-              fontSize: 10,
+              fontSize: 12,
               color: md.muted,
               fontFamily: md.titleFont,
               textTransform: "uppercase",
@@ -83,13 +83,13 @@ export function CopyBlock({
           onClick={copy}
           style={{
             position: "absolute",
-            top: 8,
-            right: 8,
+            top: 10,
+            right: 10,
             background: copied ? md.green : "rgba(255,255,255,0.1)",
             border: "none",
             borderRadius: 4,
-            padding: "3px 10px",
-            fontSize: 10,
+            padding: "4px 12px",
+            fontSize: 12,
             cursor: "pointer",
             color: copied ? "white" : "#aaa",
             fontFamily: md.bodyFont,
@@ -105,9 +105,9 @@ export function CopyBlock({
               style={{
                 ...style,
                 margin: 0,
-                padding: "14px 18px",
-                paddingRight: 70,
-                fontSize: 13,
+                padding: "18px 22px",
+                paddingRight: 80,
+                fontSize: 16,
                 fontFamily: md.titleFont,
                 lineHeight: 1.7,
                 overflowX: "auto",

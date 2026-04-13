@@ -12,8 +12,8 @@ export function AgendaList() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 16,
-            padding: "12px 16px",
+            gap: 18,
+            padding: "14px 20px",
             background: theme.snow,
             border: `1.5px solid ${theme.grid}`,
             borderRadius: 8,
@@ -23,8 +23,8 @@ export function AgendaList() {
         >
           <span
             style={{
-              width: 30,
-              height: 30,
+              width: 36,
+              height: 36,
               borderRadius: "50%",
               background: theme.accent,
               color: "#fff",
@@ -32,7 +32,7 @@ export function AgendaList() {
               alignItems: "center",
               justifyContent: "center",
               fontWeight: 700,
-              fontSize: 13,
+              fontSize: 15,
               fontFamily: theme.titleFont,
               flexShrink: 0,
             }}
@@ -42,7 +42,7 @@ export function AgendaList() {
           <div>
             <span
               style={{
-                fontSize: 14,
+                fontSize: 17,
                 fontWeight: 700,
                 color: theme.text,
                 fontFamily: theme.titleFont,
@@ -50,7 +50,7 @@ export function AgendaList() {
             >
               {part.label}
             </span>
-            <span style={{ fontSize: 12, color: theme.muted, marginLeft: 8 }}>
+            <span style={{ fontSize: 14, color: theme.muted, marginLeft: 10 }}>
               {part.tagline}
             </span>
           </div>

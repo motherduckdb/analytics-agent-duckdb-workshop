@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { theme } from "@/lib/theme";
+import { asset } from "@/lib/asset";
 
 export function Exercise({
   title = "Hands-on",
@@ -54,12 +55,22 @@ export function Exercise({
           marginBottom: children ? 12 : 0,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 22 }}>&#9997;&#65039;</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <img
+            src={asset("/exercise-duck.png")}
+            alt=""
+            aria-hidden
+            style={{
+              width: 72,
+              height: 72,
+              objectFit: "contain",
+              flexShrink: 0,
+            }}
+          />
           <div>
             <span
               style={{
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: 700,
                 fontFamily: theme.titleFont,
                 color: theme.text,
@@ -69,7 +80,7 @@ export function Exercise({
             </span>
             <span
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 color: theme.muted,
                 marginLeft: 8,
               }}
