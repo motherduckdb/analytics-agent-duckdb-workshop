@@ -100,15 +100,19 @@ export function PartPage({
             justifyContent: "space-between",
           }}
         >
-          <h1
-            style={{
-              fontSize: fullscreen ? 26 : 22,
-              fontFamily: theme.titleFont,
-              margin: "0 0 4px",
-            }}
-          >
-            {title}
-          </h1>
+          {title ? (
+            <h1
+              style={{
+                fontSize: fullscreen ? 26 : 22,
+                fontFamily: theme.titleFont,
+                margin: "0 0 4px",
+              }}
+            >
+              {title}
+            </h1>
+          ) : (
+            <span />
+          )}
           <button
             onClick={toggleFullscreen}
             title={fullscreen ? "Exit fullscreen (F)" : "Fullscreen (F)"}

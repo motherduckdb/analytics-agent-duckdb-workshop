@@ -1,23 +1,70 @@
-## What is DuckDB?
+## About DuckDB
 
-DuckDB is an in-process analytical database. Think SQLite, but for analytics. It queries files directly — no server needed.
+**In-process analytical database.** Think SQLite, but for analytics.
 
-<CopyBlock label="Quick CLI test" text={`duckdb duckoffee.duckdb -c "SHOW TABLES;"`} />
+<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
+  <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.7, fontSize: 14 }}>
+    <li>Built in **C++**, no server, no daemon</li>
+    <li>**1 single binary** — all batteries included</li>
+    <li>Rich ecosystem: **CLI, Python, R, Node, Java, WASM…**</li>
+    <li>**Extensions**, core + community (httpfs, iceberg, spatial, delta, h3…)</li>
+  </ul>
+
+  <div style={{ background: "#F8F7F7", border: "1.5px solid #E8E3DE", borderRadius: 10, padding: "18px 20px", textAlign: "center" }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#A1A1A1", textTransform: "uppercase", letterSpacing: 1 }}>
+      PyPI downloads · week of Apr 6, 2026
+    </div>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 42, fontWeight: 700, color: "#16AA98", lineHeight: 1.2, marginTop: 8 }}>
+      9.8M
+    </div>
+    <div style={{ fontSize: 12, color: "#383838", marginTop: 6 }}>
+      source: <a href="https://duckdbstats.com" target="_blank" rel="noreferrer" style={{ color: "#6FC2FF" }}>duckdbstats.com</a>
+    </div>
+  </div>
+</div>
+
+---
+
+## Install & First CLI Playout
+
+If you're on the devcontainer, DuckDB is already there. If not, here's the recap:
+
+<CopyBlock label="Install DuckDB CLI" text={`# macOS / Linux
+uv tool install duckdb-cli
+
+# or standalone
+curl https://install.duckdb.org | sh`} />
+
+<CopyBlock label="Fire it up" text={`duckdb duckoffee.duckdb -c "SHOW TABLES;"`} />
+
+<Exercise title="Try the CLI yourself" minutes={3}>
+  Open a terminal, install DuckDB (if needed), and run `SHOW TABLES` on `duckoffee.duckdb`.
+  Bonus: `duckdb -c "SELECT 'hello duck' AS greeting;"` — no file needed.
+</Exercise>
+
+---
+
+## Read Anything, One Line
+
+DuckDB queries CSV/Parquet/JSON — locally or **straight from S3** — with a single line.
+
+<CopyBlock label="CSV from a public S3 bucket" text={`FROM 'https://us.data.motherduck.com/who_ambient_air_quality/csv/who_ambient_air_quality_database_version_2024.csv'
+LIMIT 5;`} />
+
+<CopyBlock label="What extensions are loaded?" text={`FROM duckdb_extensions() WHERE loaded ORDER BY extension_name;`} />
+
+<Tip>No `CREATE TABLE`, no `COPY`, no schema file. `httpfs` auto-loads. This is why DuckDB is the data scientist's duct tape.</Tip>
 
 ---
 
 ## Python is Home
 
-This is PyCon — let's use Python.
+This is PyCon — let's use Python. Same engine, same SQL.
 
 <CopyBlock label="Create part1.py" text={`import duckdb
 
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
-# What tables do we have?
-con.sql("SHOW TABLES").show()
-
-# How big is the data?
 con.sql("""
     SELECT
         (SELECT count(*) FROM orders) AS orders,
@@ -30,18 +77,6 @@ con.sql("""
 <CopyBlock label="Run it" text="uv run python part1.py" />
 
 You should see: **120k orders, 12k customers, 500k line items, 25 products, 20 venues.**
-
----
-
-## Explore the Venues
-
-<CopyBlock label="Venues and cities" text={`con.sql("""
-    SELECT location_name, city, venue_type
-    FROM locations
-    ORDER BY city, location_name
-""").show()`} />
-
-20 venues across 13 cities worldwide. Each is a different type: Main Hall, Workshop Room, Cafe, Rooftop.
 
 ---
 

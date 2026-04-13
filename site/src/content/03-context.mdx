@@ -12,22 +12,27 @@ The good news: **LLMs are very good at pulling data from many sources.** We can 
 
 In practice, semantic context is already embedded across your tools:
 
-```
-                    Semantic Context
-         ┌──────────────┼──────────────┐
-         │              │              │
-   ┌─────┴─────┐ ┌─────┴─────┐ ┌─────┴─────┐
-   │   dbt     │ │   BI      │ │  Analyst   │
-   │  models   │ │  charts   │ │  queries   │
-   └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
-         │              │              │
-         └──────────────┼──────────────┘
-                        │
-              ┌─────────┴─────────┐
-              │  Your Data        │
-              │  Warehouse        │
-              └───────────────────┘
-```
+<Mermaid
+  caption="Semantic context sources → data warehouse"
+  chart={`flowchart TB
+    SC(["Semantic Context"]):::ctx
+    DBT["dbt<br/><span style='font-size:11px;color:#A1A1A1'>models &amp; tests</span>"]:::src
+    BI["BI<br/><span style='font-size:11px;color:#A1A1A1'>charts &amp; metrics</span>"]:::src
+    AN["Analyst<br/><span style='font-size:11px;color:#A1A1A1'>ad-hoc queries</span>"]:::src
+    DW[("Your Data Warehouse<br/><span style='font-size:11px;color:#A1A1A1'>DuckDB · Snowflake · BigQuery</span>")]:::dw
+
+    SC --> DBT
+    SC --> BI
+    SC --> AN
+    DBT --> DW
+    BI --> DW
+    AN --> DW
+
+    classDef ctx fill:#FFDE00,stroke:#383838,stroke-width:2px,color:#383838,font-weight:700
+    classDef src fill:#FFFFFF,stroke:#6FC2FF,stroke-width:1.5px,color:#383838
+    classDef dw fill:#383838,stroke:#16AA98,stroke-width:2px,color:#FFFFFF,font-weight:700
+  `}
+/>
 
 You don't need a complex data application to create this. It can start as simple as **comments on columns and tables** in your data warehouse that you let your LLM generate monthly from your sources.
 

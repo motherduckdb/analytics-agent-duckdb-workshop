@@ -5,6 +5,8 @@ import { Tip } from "@/components/ui/Tip";
 import { Quiz } from "@/components/ui/Quiz";
 import { AgenticLoop } from "@/components/animations/AgenticLoop";
 import { Exercise } from "@/components/ui/Exercise";
+import { AgendaList } from "@/components/ui/AgendaList";
+import { Mermaid } from "@/components/ui/Mermaid";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -15,6 +17,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Quiz,
     AgenticLoop,
     Exercise,
+    AgendaList,
+    Mermaid,
     // Let rehype-pretty-code handle pre/code — don't override them
   };
 }
