@@ -89,14 +89,23 @@ Try:
 
 An agent that discovers tools **from the server**:
 
-<CopyBlock label="agent_mcp.py" text={`import asyncio
+<CopyBlock label="agent_mcp.py" text={`import asyncio, os
 from pydantic_ai import Agent
+from pydantic_ai.models.openai import OpenAIChatModel
+from pydantic_ai.providers.openrouter import OpenRouterProvider
 from pydantic_ai.toolsets.fastmcp import FastMCPToolset
+
+# Default: OpenRouter + Sonnet
+model = OpenAIChatModel(
+    os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4"),
+    provider=OpenRouterProvider(api_key=os.environ["OPENROUTER_API_KEY"]),
+)
+# or BYOK direct: model = "anthropic:claude-sonnet-4-20250514"
 
 async def main():
     toolset = FastMCPToolset("mcp-server/server.py")
     agent = Agent(
-        "anthropic:claude-sonnet-4-20250514",
+        model,
         system_prompt=open("skill.md").read(),
         toolsets=[toolset],
     )

@@ -26,9 +26,6 @@ An agent needs a database it can reach for in **milliseconds**, without provisio
 ## <Badge color="#FFDE00">Era 1</Badge> Copy-Paste
 
 Paste your schema into a chat, ask a question, copy the SQL back into DuckDB.
-
-<CopyBlock label="Start ollama" text="ollama run gemma4:latest" />
-
 **You** are the glue — copying, pasting, fixing errors.
 
 <Tip>Still useful for one-offs. But not for repeated analytics.</Tip>
@@ -39,16 +36,22 @@ Paste your schema into a chat, ask a question, copy the SQL back into DuckDB.
 
 opencode and Claude Code have the loop built in. The model runs bash, reads output, iterates.
 
-<CopyBlock label="With opencode (Ollama)" text="opencode" />
+<CopyBlock label="opencode + OpenRouter (Sonnet)" text={`export OPENROUTER_API_KEY="sk-or-v1-..."
+opencode --model openrouter/anthropic/claude-sonnet-4`} />
 
-<CopyBlock label="With Claude Code (Anthropic)" text="claude" />
+<CopyBlock label="opencode + direct Anthropic key (BYOK)" text={`export ANTHROPIC_API_KEY="sk-ant-..."
+opencode --model anthropic/claude-sonnet-4-20250514`} />
+
+<CopyBlock label="Claude Code (direct Anthropic)" text="claude" />
+
+<Tip>Side-note: fully local? `ollama serve && ollama pull gemma4:latest && opencode --model ollama/gemma4:latest`. Slower, free, offline.</Tip>
 
 Then just ask — the agent is smart enough to figure out the schema:
 
 <CopyBlock label="Prompt" text={`Get me some analytics about this duckdb db duckoffee.duckdb using uv`} />
 
 <Exercise title="Try it yourself" minutes={5}>
-  Pick opencode or Claude Code. Ask 2-3 questions about the Duckoffee data. Watch how the agent explores the schema on its own.
+  Pick opencode (OpenRouter/Sonnet) or Claude Code. Ask 2-3 questions about the Duckoffee data. Watch how the agent explores the schema on its own.
 </Exercise>
 
 ---
@@ -79,11 +82,20 @@ Watch the full cycle: prompt &rarr; tool call &rarr; error &rarr; self-correct &
 
 ~35 lines of Python. The agentic loop is just a `while` loop:
 
-<CopyBlock label="Create agent_loop.py" text={`from openai import OpenAI  # works with Ollama
-import duckdb, json
+<CopyBlock label="Create agent_loop.py" text={`from openai import OpenAI  # OpenAI SDK → any OpenAI-compatible endpoint
+import duckdb, json, os
 
-client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
-MODEL = "gemma4:latest"
+# Default: OpenRouter + Claude Sonnet (BYOK)
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+)
+MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
+
+# Side-note: fully local — swap the two lines above for:
+#   client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+#   MODEL  = "gemma4:latest"
+
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
 tools = [{"type": "function", "function": {

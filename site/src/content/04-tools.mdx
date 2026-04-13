@@ -15,14 +15,27 @@ The LLM decides **when** to call a tool. The code decides **what** happens.
 
 ## Agent with PydanticAI
 
-<CopyBlock label="Create agent_tools.py" text={`from pydantic_ai import Agent
-import duckdb, json
+<CopyBlock label="Create agent_tools.py" text={`import os, json, duckdb
 from pathlib import Path
+from pydantic_ai import Agent
+from pydantic_ai.models.openai import OpenAIChatModel
+from pydantic_ai.providers.openrouter import OpenRouterProvider
 
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
+# Default: OpenRouter + Claude Sonnet
+model = OpenAIChatModel(
+    os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4"),
+    provider=OpenRouterProvider(api_key=os.environ["OPENROUTER_API_KEY"]),
+)
+
+# BYOK alternatives — pick one:
+#   model = "anthropic:claude-sonnet-4-20250514"      # direct Anthropic key
+#   model = "openai:gpt-4o"                            # direct OpenAI key
+#   model = "ollama:gemma4:latest"                     # fully local side-note
+
 agent = Agent(
-    "anthropic:claude-sonnet-4-20250514",  # or "ollama:gemma4:latest"
+    model,
     system_prompt=Path("skill.md").read_text(),
 )
 
@@ -152,9 +165,13 @@ uv run python agent_tools.py "What's the profit margin on beverages?"`} />
 
 ## Swap Providers
 
-<CopyBlock label="One string change" text={`agent = Agent("ollama:gemma4:latest", system_prompt=Path("skill.md").read_text())`} />
+<CopyBlock label="One change, another provider" text={`# Direct Anthropic key (BYOK)
+agent = Agent("anthropic:claude-sonnet-4-20250514", system_prompt=Path("skill.md").read_text())
 
-Same tools, same skill, different model.
+# Local Ollama side-note
+# agent = Agent("ollama:gemma4:latest", system_prompt=Path("skill.md").read_text())`} />
+
+Same tools, same skill, different model. Your tools are portable across providers.
 
 <Quiz
   question="Why use revenue_by_venue() instead of letting the LLM write SQL?"
