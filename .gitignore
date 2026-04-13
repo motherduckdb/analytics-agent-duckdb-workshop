@@ -1,0 +1,19 @@
+# DuckDB
+*.duckdb.wal
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+workshop/.venv/
+
+# Node
+site/node_modules/
+site/out/
+site/.next/
+
+# Claude
+.claude
+
+# OS
+.DS_Store

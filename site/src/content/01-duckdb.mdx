@@ -1,0 +1,131 @@
+import { asset } from "@/lib/asset";
+
+## About DuckDB
+
+<div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 14 }}>
+  <img src={asset("/duckdb-logo.svg")} alt="DuckDB" style={{ height: 56, width: "auto" }} />
+  <div style={{ fontSize: 20, color: "#383838" }}>
+    <strong>In-process analytical database.</strong> Think SQLite, but for analytics.
+  </div>
+</div>
+
+<div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 20, marginTop: 16 }}>
+  <ul style={{ margin: 0, paddingLeft: 22, lineHeight: 1.7, fontSize: 18 }}>
+    <li>Built in **C++**, no server, no daemon</li>
+    <li>**1 single binary** — all batteries included</li>
+    <li>**Open source (MIT)**, vendor-neutral, born at CWI Amsterdam</li>
+    <li>**Columnar vectorized** engine — fast on laptop or in Lambda</li>
+    <li>Rich ecosystem: **CLI, Python, R, Node, Java, WASM…**</li>
+    <li>**Extensions**, core + community (httpfs, iceberg, spatial, delta, h3…)</li>
+  </ul>
+
+  <div style={{ background: "#F8F7F7", border: "1.5px solid #E8E3DE", borderRadius: 10, padding: "22px 24px", textAlign: "center" }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "#A1A1A1", textTransform: "uppercase", letterSpacing: 1 }}>
+      PyPI downloads · week of Apr 6, 2026
+    </div>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 56, fontWeight: 700, color: "#16AA98", lineHeight: 1.2, marginTop: 10 }}>
+      9.8M
+    </div>
+    <div style={{ fontSize: 15, color: "#383838", marginTop: 8 }}>
+      source: <a href="https://duckdbstats.com" target="_blank" rel="noreferrer" style={{ color: "#6FC2FF" }}>duckdbstats.com</a>
+    </div>
+  </div>
+</div>
+
+---
+
+## Install & First CLI Playout
+
+If you're on the devcontainer, DuckDB is already there. If not, here's the recap:
+
+<CopyBlock label="Install DuckDB CLI" text={`# macOS / Linux
+uv tool install duckdb-cli
+
+# or standalone
+curl https://install.duckdb.org | sh`} />
+
+<CopyBlock label="Fire it up" text={`duckdb duckoffee.duckdb -c "SHOW TABLES;"`} />
+
+<Exercise title="Try the CLI yourself" minutes={3}>
+  Open a terminal, install DuckDB (if needed), and run `SHOW TABLES` on `duckoffee.duckdb`.
+  Bonus: `duckdb -c "SELECT 'hello duck' AS greeting;"` — no file needed.
+</Exercise>
+
+---
+
+## Read Anything, One Line
+
+DuckDB queries CSV/Parquet/JSON — locally or **straight from S3** — with a single line.
+
+<CopyBlock label="CSV from a public S3 bucket" text={`FROM 'https://us.data.motherduck.com/who_ambient_air_quality/csv/who_ambient_air_quality_database_version_2024.csv'
+LIMIT 5;`} />
+
+<CopyBlock label="What extensions are loaded?" text={`FROM duckdb_extensions() WHERE loaded ORDER BY extension_name;`} />
+
+<Tip>No `CREATE TABLE`, no `COPY`, no schema file. `httpfs` auto-loads. This is why DuckDB is the data scientist's duct tape.</Tip>
+
+---
+
+## Python is Home
+
+This is PyCon — let's use Python. Same engine, same SQL.
+
+<CopyBlock label="Create part1.py" text={`import duckdb
+
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+con.sql("""
+    SELECT
+        (SELECT count(*) FROM orders) AS orders,
+        (SELECT count(*) FROM customers) AS customers,
+        (SELECT count(*) FROM order_items) AS line_items,
+        (SELECT count(*) FROM products) AS products,
+        (SELECT count(*) FROM locations) AS venues
+""").show()`} />
+
+<CopyBlock label="Run it" text="uv run python part1.py" />
+
+You should see: **120k orders, 12k customers, 500k line items, 25 products, 20 venues.**
+
+---
+
+## Revenue by Venue
+
+<CopyBlock label="Revenue query" text={`con.sql("""
+    SELECT l.location_name, l.city,
+           count(*) AS orders,
+           round(sum(o.order_total), 2) AS revenue
+    FROM orders o
+    JOIN locations l ON o.location_id = l.location_id
+    GROUP BY ALL
+    ORDER BY revenue DESC
+""").show()`} />
+
+<Exercise title="Write your own query" minutes={3}>
+  Try querying the `customers` table. How many returning vs new customers are there? (Hint: the column is `customer_type` with values `'new'` and `'returning'`.)
+</Exercise>
+
+---
+
+## DuckDB Superpowers
+
+<CopyBlock label="GROUP BY ALL" text={`con.sql("SELECT product_category, count(*) FROM order_items GROUP BY ALL ORDER BY ALL").show()`} />
+
+<CopyBlock label="FROM-first" text={`con.sql("FROM products LIMIT 5").show()`} />
+
+<CopyBlock label="EXCLUDE columns" text={`con.sql("SELECT * EXCLUDE (email, registered_at) FROM customers LIMIT 5").show()`} />
+
+<Tip>Same engine whether you use CLI or `import duckdb`. CLI for exploration, Python for integration.</Tip>
+
+---
+
+## Checkpoint
+
+DuckDB works great from Python. **But** — you need to know SQL. What if your teammate doesn't?
+
+<Quiz
+  question="How many venues does Duckoffee have?"
+  options={["6", "20", "25"]}
+  correct={1}
+  explanation="20 venues across 13 cities worldwide. The locations table has all 20."
+/>

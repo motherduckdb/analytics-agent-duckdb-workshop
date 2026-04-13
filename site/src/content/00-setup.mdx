@@ -1,0 +1,118 @@
+## What You'll Need
+
+Three tools on your machine, plus a key for the model. That's it.
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 14, marginBottom: 18 }}>
+  <div style={{ padding: "18px 20px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, color: "#6FC2FF", textTransform: "uppercase", letterSpacing: 1 }}>1 · Python</div>
+    <div style={{ fontSize: 16, marginTop: 8, lineHeight: 1.5 }}>3.10+. Ships with most systems — <code>python3 --version</code>.</div>
+  </div>
+  <div style={{ padding: "18px 20px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, color: "#16AA98", textTransform: "uppercase", letterSpacing: 1 }}>2 · uv</div>
+    <div style={{ fontSize: 16, marginTop: 8, lineHeight: 1.5 }}>Fast Python package manager. <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></div>
+  </div>
+  <div style={{ padding: "18px 20px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, color: "#FFDE00", textTransform: "uppercase", letterSpacing: 1 }}>3 · opencode</div>
+    <div style={{ fontSize: 16, marginTop: 8, lineHeight: 1.5 }}>Agentic CLI client. <code>curl -fsSL https://opencode.ai/install | bash</code></div>
+  </div>
+</div>
+
+### Get a model key
+
+Pick **one** of the two options:
+
+- **Grab a MotherDuck-minted key** at [motherduck.com/minter](https://motherduck.com/minter) — pre-provisioned credits, no signup hassle. Fastest path.
+- **Bring your own key** — OpenRouter (`OPENROUTER_API_KEY`) for Sonnet via any provider, or a direct Anthropic / OpenAI key.
+
+<Tip>**Bonus — Devcontainer.** Don't want to install Python, uv, and opencode locally? Open the repo in a Codespace or run the devcontainer locally — everything comes pre-installed, you just bring your key.</Tip>
+
+---
+
+## Set Your Key
+
+<CopyBlock label="Option A — MotherDuck-minted key (recommended)" text={`# Grab one at motherduck.com/minter, then:
+export OPENROUTER_API_KEY="sk-or-v1-..."
+export OPENROUTER_MODEL="anthropic/claude-sonnet-4"`} />
+
+<CopyBlock label="Option B — Bring Your Own Key" text={`# OpenRouter (works with Sonnet, GPT-4o, Gemini, etc.)
+export OPENROUTER_API_KEY="sk-or-v1-..."
+
+# …or direct Anthropic
+export ANTHROPIC_API_KEY="sk-ant-..."`} />
+
+---
+
+## Bonus — Devcontainer
+
+Don't want to install Python, uv, and opencode yourself? Open the repo in a Codespace (or run the devcontainer locally) and skip straight to `export OPENROUTER_API_KEY=...`.
+
+<CopyBlock label="Open in Codespace" text={`# Click "Code" → "Codespaces" → "Create codespace on main"
+# Or from the CLI:
+gh codespace create --repo motherduckdb/analytics-agent-duckdb-workshop`} />
+
+<CopyBlock label="Verify (inside devcontainer or local)" text={`python3 --version   # 3.10+
+uv --version
+opencode --version
+duckdb --version`} />
+
+---
+
+## Side-note — Fully Local with Ollama
+
+Want to demo the flow **offline, no key needed**? Ollama + Gemma is a slower but free fallback. The code is identical — only the provider string changes.
+
+<CopyBlock label="Pull Gemma and serve" text={`ollama serve &
+ollama pull gemma4:latest`} />
+
+---
+
+## The Duckoffee Dataset
+
+You'll work with **Duckoffee** — a chain of coffee venues at tech conferences across 13 cities worldwide.
+
+<CopyBlock label="Quick check" text={`duckdb duckoffee.duckdb -c "SELECT location_name, city FROM locations;"`} />
+
+The database has **multiple layers** — and some of them are traps:
+
+| Layer | Tables | Watch out |
+|-------|--------|-----------|
+| **Raw** | raw_orders, raw_items, raw_supplies, raw_legacy_invoices | Amounts in **cents**, cryptic column names |
+| **Staging** | stg_orders, stg_items, stg_supplies, stg_legacy_invoices | Clean names, euros |
+| **Marts** | orders, customers, order_items | Pre-computed fields, the source of truth |
+| **Dead-ends** | daily_revenue, customer_segments, order_facts | Stale, incomplete, or ambiguous |
+
+Scale: **12k customers, 120k orders, 500k line items, 25 products, 20 venues, 12k legacy invoices.**
+
+---
+
+## The Setup
+
+You run analytics for Duckoffee. Every week the team asks:
+- *"What's our revenue by venue?"*
+- *"Who are our top customers?"*
+- *"Which products are profitable?"*
+
+You spend **a day a week** on ad-hoc queries. Today we'll build an **answers machine**.
+
+---
+
+## What We'll Build
+
+| Part | What | Time |
+|------|------|------|
+| 1 | DuckDB from Python | 10 min |
+| 2 | Text-to-SQL & the agentic loop | 15 min |
+| 3 | Semantic context: skill file + COMMENT ON | 15 min |
+| 4 | Deterministic tools with PydanticAI | 20 min |
+| 5 | Distribute via FastMCP | 15 min |
+
+<Quiz
+  question="What's special about this dataset?"
+  options={[
+    "It's a single clean table",
+    "It has multiple layers with traps: raw (cents), staging, marts, and dead-end tables",
+    "It's a CSV file",
+  ]}
+  correct={1}
+  explanation="The Duckoffee database has raw tables (amounts in cents!), staging tables, clean marts, and dead-end tables that will trick an LLM. That's what makes semantic context valuable."
+/>

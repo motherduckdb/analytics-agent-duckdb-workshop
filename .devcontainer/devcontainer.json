@@ -1,0 +1,45 @@
+{
+  "name": "SQL is Dead, Long Live SQL — Workshop",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/workshop",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "postCreateCommand": "bash ../.devcontainer/post-create.sh",
+  "postStartCommand": "bash ../.devcontainer/post-start.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.next/**": true,
+          "**/.venv/**": true,
+          "**/site/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/.next": true,
+          "**/.venv": true,
+          "**/site": true
+        },
+        "typescript.disableAutomaticTypeAcquisition": true,
+        "typescript.tsserver.maxTsServerMemory": 512,
+        "npm.autoDetect": "off",
+        "extensions.ignoreRecommendations": true,
+        "telemetry.telemetryLevel": "off"
+      },
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  }
+}
