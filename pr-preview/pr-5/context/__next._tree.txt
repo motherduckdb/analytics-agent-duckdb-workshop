@@ -1,0 +1,2 @@
+:HL["/analytics-agent-duckdb-workshop/pr-preview/pr-5/_next/static/chunks/0_2scn1dlxt8..css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"context","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"uzv3cOFmoOrxQJzyzaZND"}
