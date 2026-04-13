@@ -20,10 +20,25 @@ if [ -f "$WORKSHOP_DIR/pyproject.toml" ]; then
     cd "$WORKSHOP_DIR" && uv sync
 fi
 
-# Configure opencode to use local Ollama
+# Install modern opencode (sst/opencode) + Claude Code via npm
+# (Node is provided by the devcontainer `node` feature, not the Dockerfile.)
+if command -v npm &> /dev/null; then
+    echo "==> Installing opencode (agentic CLI, Path A)..."
+    npm install -g opencode-ai 2>/dev/null || echo "    opencode install skipped."
+
+    echo "==> Installing Claude Code (optional, Path B)..."
+    npm install -g @anthropic-ai/claude-code 2>/dev/null || echo "    Claude Code install skipped."
+fi
+
+# Configure opencode to use local Ollama. Matches the modern opencode
+# schema (opencode.ai) so `opencode` and `ollama launch opencode --model gemma4`
+# both pick up the same config. Both model tags are listed so the "gemma4"
+# alias created after the pull resolves cleanly.
 mkdir -p ~/.config/opencode
 cat > ~/.config/opencode/opencode.json << 'EOF'
 {
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/gemma4:latest",
   "provider": {
     "ollama": {
       "name": "@ai-sdk/openai-compatible",
@@ -35,24 +50,22 @@ cat > ~/.config/opencode/opencode.json << 'EOF'
           "name": "gemma4:latest",
           "contextWindow": 131072,
           "defaultTemperature": 0.7
+        },
+        "gemma4": {
+          "name": "gemma4",
+          "contextWindow": 131072,
+          "defaultTemperature": 0.7
         }
       }
     }
-  },
-  "model": "ollama/gemma4:latest"
+  }
 }
 EOF
-
-# Install Claude Code if Node is available (Path B — optional)
-if command -v npm &> /dev/null; then
-    echo "==> Installing Claude Code (optional, for Path B)..."
-    npm install -g @anthropic-ai/claude-code 2>/dev/null || echo "    Claude Code install skipped."
-fi
 
 # ---- Pull Gemma 4 model ----
 # Auto-pull in Codespaces (prebuild caches it). Skip locally (conference wifi).
 if [ -n "${CODESPACES:-}" ]; then
-    echo "==> Codespace detected — pulling Gemma 4 26B (cached by prebuild)..."
+    echo "==> Codespace detected — pulling gemma4:latest (cached by prebuild)..."
     ollama serve &
     OLLAMA_PID=$!
     for i in $(seq 1 30); do
@@ -60,6 +73,8 @@ if [ -n "${CODESPACES:-}" ]; then
         sleep 2
     done
     ollama pull gemma4:latest
+    # Alias so `ollama launch opencode --model gemma4` (bare tag) resolves.
+    ollama cp gemma4:latest gemma4 2>/dev/null || true
     kill $OLLAMA_PID 2>/dev/null || true
 else
     echo "==> Local environment detected — skipping model pull (9.6GB)."

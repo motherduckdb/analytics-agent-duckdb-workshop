@@ -18,11 +18,6 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 # ---- Ollama (install script auto-detects arch) ----
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# ---- opencode ----
-RUN if [ "$TARGETARCH" = "arm64" ]; then ARCH="arm64"; else ARCH="x86_64"; fi && \
-    curl -fsSL "https://github.com/opencode-ai/opencode/releases/download/v0.0.55/opencode-linux-${ARCH}.tar.gz" \
-    | tar -xz -C /usr/local/bin
-
 # ---- Switch to vscode user ----
 USER vscode
 ENV PATH="/home/vscode/.local/bin:${PATH}"
