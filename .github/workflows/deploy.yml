@@ -27,6 +27,8 @@ jobs:
       - name: Build static site
         run: npm run build
         working-directory: site
+        env:
+          BASE_PATH: /analytics-agent-duckdb-workshop
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
