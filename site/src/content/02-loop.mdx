@@ -102,7 +102,7 @@ The agent will confidently pick the **wrong** table. Try these:
 
 <CopyBlock label="Trap question 1 — Cents vs euros (C01)" text={`What's the average order value?`} />
 
-<Tip>The agent will likely query `raw_orders.order_total` and return **~17,000** — because raw_orders stores amounts in **cents**, not euros. The correct answer is **169.90 euros** from the `orders` table.</Tip>
+<Tip>The agent will likely query `raw_orders.order_total` and return **~17,000** — because raw_orders stores amounts in **cents**, not euros. Alternatively, it might query `order_facts` which misses taxes. The correct answer is **169.90 euros** from the `orders` table.</Tip>
 
 <CopyBlock label="Trap question 2 — Column renames (C04)" text={`Which venue has the highest total revenue?`} />
 
