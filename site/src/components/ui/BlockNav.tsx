@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { theme, PARTS } from "@/lib/theme";
+import { theme, PARTS, partHref } from "@/lib/theme";
 
 export function BlockNav({
   total,
@@ -28,7 +28,7 @@ export function BlockNav({
     if (!isFirst) {
       onChange(current - 1);
     } else if (prevPart) {
-      router.push(`/${prevPart.id}`);
+      router.push(partHref(prevPart));
     }
   }, [current, isFirst, prevPart, onChange, router]);
 
@@ -36,7 +36,7 @@ export function BlockNav({
     if (!isLast) {
       onChange(current + 1);
     } else if (nextPart) {
-      router.push(`/${nextPart.id}`);
+      router.push(partHref(nextPart));
     }
   }, [current, isLast, nextPart, onChange, router]);
 

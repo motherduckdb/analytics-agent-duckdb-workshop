@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { theme, PARTS } from "@/lib/theme";
+import { theme, PARTS, partHref } from "@/lib/theme";
 
 export function AgendaList() {
+  const items = PARTS.filter((p) => p.id !== "intro");
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      {PARTS.map((part, i) => (
+      {items.map((part, i) => (
         <Link
           key={part.id}
-          href={`/${part.id}`}
+          href={partHref(part)}
           style={{
             display: "flex",
             alignItems: "center",

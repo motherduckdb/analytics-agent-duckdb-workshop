@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { theme, PARTS } from "@/lib/theme";
+import { theme, PARTS, partHref } from "@/lib/theme";
 
 export function PartTabs() {
   const pathname = usePathname();
@@ -20,8 +20,11 @@ export function PartTabs() {
       }}
     >
       {PARTS.map((part) => {
-        const href = `/${part.id}`;
-        const active = pathname === href || pathname.startsWith(href + "/");
+        const href = partHref(part);
+        const active =
+          href === "/"
+            ? pathname === "/"
+            : pathname === href || pathname.startsWith(href + "/");
 
         return (
           <Link

@@ -23,6 +23,7 @@ export const PALETTE = [
 ];
 
 export const PARTS = [
+  { id: "intro", label: "Intro", tagline: "5 min", file: "intro", href: "/" },
   { id: "setup", label: "Setup", tagline: "5 min", file: "00-setup" },
   { id: "duckdb", label: "DuckDB", tagline: "10 min", file: "01-duckdb" },
   { id: "loop", label: "The Loop", tagline: "15 min", file: "02-agentic-loop" },
@@ -31,3 +32,7 @@ export const PARTS = [
   { id: "mcp", label: "MCP", tagline: "15 min", file: "05-mcp" },
   { id: "wrapup", label: "Wrap-Up", tagline: "5 min", file: "06-wrapup" },
 ] as const;
+
+export function partHref(part: { id: string; href?: string }): string {
+  return part.href ?? `/${part.id}`;
+}

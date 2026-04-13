@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "12px 0" }}>
   <div style={{ fontSize: 13, letterSpacing: 2, textTransform: "uppercase", color: "#A1A1A1", fontFamily: "'Space Mono', monospace", marginBottom: 16 }}>
     Workshop
@@ -25,9 +27,9 @@
     <span style={{ fontFamily: "'Space Mono', monospace", color: "#A1A1A1", textTransform: "uppercase", letterSpacing: 1, fontSize: 11 }}>
       Authors
     </span>
-    <span style={{ fontWeight: 700 }}>Mehdio</span>
+    <span style={{ fontWeight: 700 }}>Mehdi Ouazza</span>
     <span style={{ color: "#A1A1A1" }}>·</span>
-    <span style={{ fontWeight: 700 }}>Dumky</span>
+    <span style={{ fontWeight: 700 }}>Dumky de Wilde</span>
     <span style={{ color: "#A1A1A1" }}>— Data Eng &amp; DevRel @ MotherDuck</span>
   </div>
 </div>
@@ -36,14 +38,16 @@
 
 ## About Us
 
-<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: 8 }}>
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 10 }}>
+<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 6 }}>
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "18px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 10 }}>
     <img
-      src="/authors/mehdio.png"
-      alt="Mehdio"
-      style={{ width: 140, height: 140, objectFit: "cover", borderRadius: "50%", marginBottom: 14, border: "3px solid #6FC2FF" }}
+      src={asset("/authors/mehdio.png")}
+      alt="Mehdi Ouazza"
+      style={{ width: 110, height: 110, objectFit: "cover", borderRadius: "50%", marginBottom: 12, border: "3px solid #6FC2FF" }}
     />
-    <h3 style={{ margin: "0 0 2px", fontFamily: "'Space Mono', monospace", fontSize: 18 }}>Mehdio</h3>
+    <h3 style={{ margin: "0 0 2px", fontFamily: "'Space Mono', monospace", fontSize: 17 }}>
+      Mehdi Ouazza <span style={{ color: "#A1A1A1", fontWeight: 400 }}>(mehdio)</span>
+    </h3>
     <a
       href="https://mehdio.com"
       target="_blank"
@@ -52,18 +56,20 @@
     >
       mehdio.com ↗
     </a>
-    <div style={{ fontSize: 13, color: "#383838", lineHeight: 1.55 }}>
-      Data Engineer & DevRel at MotherDuck. <em>[About me placeholder — I build data tooling, speak at conferences, and turn SQL into something people actually enjoy writing.]</em>
+    <div style={{ fontSize: 12.5, color: "#383838", lineHeight: 1.55, textAlign: "left" }}>
+      **10+ years in data** — from on-prem Spark clusters at AXA to cloud data platforms at **Klarna, Back Market, and Trade Republic**. Joined MotherDuck in **2023 as its first DevRel**, teaching full-time. Believes learning should be **fun** — storytelling and creativity over dense slides.
     </div>
   </div>
 
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 10 }}>
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "18px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 10 }}>
     <img
-      src="/authors/dumky.jpg"
-      alt="Dumky"
-      style={{ width: 140, height: 140, objectFit: "cover", borderRadius: "50%", marginBottom: 14, border: "3px solid #16AA98" }}
+      src={asset("/authors/dumky.jpg")}
+      alt="Dumky de Wilde"
+      style={{ width: 110, height: 110, objectFit: "cover", borderRadius: "50%", marginBottom: 12, border: "3px solid #16AA98" }}
     />
-    <h3 style={{ margin: "0 0 2px", fontFamily: "'Space Mono', monospace", fontSize: 18 }}>Dumky</h3>
+    <h3 style={{ margin: "0 0 2px", fontFamily: "'Space Mono', monospace", fontSize: 17 }}>
+      Dumky de Wilde
+    </h3>
     <a
       href="https://www.dumky.net/"
       target="_blank"
@@ -72,8 +78,8 @@
     >
       dumky.net ↗
     </a>
-    <div style={{ fontSize: 13, color: "#383838", lineHeight: 1.55 }}>
-      Data Engineer & DevRel at MotherDuck. <em>[About me placeholder — I love making analytics tooling developer-first, from ducks to agents.]</em>
+    <div style={{ fontSize: 12.5, color: "#383838", lineHeight: 1.55, textAlign: "left" }}>
+      **Developer &amp; Agent Experience Engineer** at MotherDuck, ex-Senior Analytics Engineer. Co-author of **Fundamentals of Analytics Engineering** and builder of everything from **€0.02/day Snowplow pipelines** to terraformed dbt deployments. Off-hours: meetups and modern-data-stack talks.
     </div>
   </div>
 </div>
