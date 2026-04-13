@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { PartTabs } from "@/components/ui/PartTabs";
 import { theme } from "@/lib/theme";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "SQL is Dead, Long Live SQL — Workshop",
@@ -50,15 +51,19 @@ export default function RootLayout({
               PyCon DE &amp; PyData 2026 &mdash; 90 min workshop
             </p>
           </div>
-          <span
-            style={{
-              fontSize: 11,
-              color: theme.muted,
-              fontFamily: theme.titleFont,
-            }}
+          <a
+            href="https://motherduck.com"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="MotherDuck"
+            style={{ display: "inline-flex", alignItems: "center" }}
           >
-            motherduck.com
-          </span>
+            <img
+              src={asset("/motherduck-logo.svg")}
+              alt="MotherDuck"
+              style={{ height: 24, width: "auto" }}
+            />
+          </a>
         </header>
         <PartTabs />
         <main style={{ flex: 1, background: theme.bg }}>{children}</main>

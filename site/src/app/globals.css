@@ -138,7 +138,9 @@ body {
 /* ── Horizontal rules (block separators — hidden) ── */
 .block-content hr { display: none; }
 
-/* ═══ FULLSCREEN MODE ═══ */
+/* ═══ FULLSCREEN MODE ═══
+   Only the backdrop changes — the slide card keeps the same width, height,
+   and typography as windowed mode for pixel-consistent authoring. */
 
 .fullscreen-overlay {
   position: fixed;
@@ -148,16 +150,5 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-}
-.fullscreen-overlay .block-content {
-  font-size: 16px;
-}
-.fullscreen-overlay .block-content h2 {
-  font-size: 28px;
-}
-.fullscreen-overlay .block-content pre {
-  font-size: 15px;
-}
-.fullscreen-overlay .block-content table {
-  font-size: 15px;
+  justify-content: center;
 }

@@ -88,9 +88,9 @@ export function PartPage({
     <div className={wrapper}>
       <div
         style={{
-          maxWidth: fullscreen ? 1100 : 1024,
+          maxWidth: 1024,
           margin: "0 auto",
-          padding: fullscreen ? "24px 48px 48px" : "16px 24px 48px",
+          padding: "16px 24px 48px",
         }}
       >
         <div
@@ -103,7 +103,7 @@ export function PartPage({
           {title ? (
             <h1
               style={{
-                fontSize: fullscreen ? 26 : 22,
+                fontSize: 22,
                 fontFamily: theme.titleFont,
                 margin: "0 0 4px",
               }}
@@ -144,13 +144,13 @@ export function PartPage({
             background: theme.surface,
             border: `1.5px solid ${theme.grid}`,
             borderRadius: 10,
-            padding: fullscreen ? "40px 48px" : "28px 32px",
-            minHeight: fullscreen ? "calc(100vh - 200px)" : "min(70vh, 560px)",
+            padding: "28px 32px",
+            minHeight: "min(70vh, 560px)",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             fontFamily: theme.bodyFont,
-            fontSize: fullscreen ? 16 : 14,
+            fontSize: 14,
             lineHeight: 1.6,
           }}
         >

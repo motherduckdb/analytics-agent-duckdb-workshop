@@ -1,78 +1,68 @@
 ## What You'll Need
 
-Pick whichever fits your setup. **Default path: OpenRouter + opencode** — works identically in the devcontainer and on your own machine.
+Three tools on your machine, plus a key for the model. That's it.
 
-| | **Recommended: BYOK** | **Offline side-note: Local Ollama** |
-|---|---|---|
-| **LLM** | Claude **Sonnet** via **OpenRouter** (or direct Anthropic key) | Gemma via Ollama (runs locally, free) |
-| **Agentic client** | `opencode` (pre-installed) — also works with Claude Code | `opencode` pointed at Ollama |
-| **Python** | 3.10+ (devcontainer: 3.12 pre-installed) | same |
-| **Package manager** | `uv` (pre-installed in devcontainer) | same |
-| **DuckDB** | Pre-installed / `uv tool install duckdb-cli` | same |
-| **Where** | Codespace or local Docker or your machine | same |
+<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 14, marginBottom: 18 }}>
+  <div style={{ padding: "14px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#6FC2FF", textTransform: "uppercase", letterSpacing: 1 }}>1 · Python</div>
+    <div style={{ fontSize: 13, marginTop: 6, lineHeight: 1.5 }}>3.10+. Ships with most systems — <code>python3 --version</code>.</div>
+  </div>
+  <div style={{ padding: "14px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#16AA98", textTransform: "uppercase", letterSpacing: 1 }}>2 · uv</div>
+    <div style={{ fontSize: 13, marginTop: 6, lineHeight: 1.5 }}>Fast Python package manager. <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></div>
+  </div>
+  <div style={{ padding: "14px 16px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#FFDE00", textTransform: "uppercase", letterSpacing: 1 }}>3 · opencode</div>
+    <div style={{ fontSize: 13, marginTop: 6, lineHeight: 1.5 }}>Agentic CLI client. <code>curl -fsSL https://opencode.ai/install | bash</code></div>
+  </div>
+</div>
 
-<Tip>**OpenRouter = one key, every frontier model.** We use it as the default so everyone — Codespace or local — has the same flow. Bring your own Anthropic key instead if you prefer; it's a one-line swap.</Tip>
+### Get a model key
+
+Pick **one** of the two options:
+
+- **Grab a MotherDuck-minted key** at [motherduck.com/minter](https://motherduck.com/minter) — pre-provisioned credits, no signup hassle. Fastest path.
+- **Bring your own key** — OpenRouter (`OPENROUTER_API_KEY`) for Sonnet via any provider, or a direct Anthropic / OpenAI key.
+
+<Tip>**Bonus — Devcontainer.** Don't want to install Python, uv, and opencode locally? Open the repo in a Codespace or run the devcontainer locally — everything comes pre-installed, you just bring your key.</Tip>
 
 ---
 
-## Get an OpenRouter Key
+## Set Your Key
 
-1. Head to [openrouter.ai](https://openrouter.ai) → **Sign in** → **Keys** → **Create Key**.
-2. Top up a few dollars of credit (Sonnet is a few cents per question).
-3. Copy the `sk-or-v1-...` key.
-
-<CopyBlock label="Export it" text={`export OPENROUTER_API_KEY="sk-or-v1-..."
-# optional: pin the model once, used everywhere
+<CopyBlock label="Option A — MotherDuck-minted key (recommended)" text={`# Grab one at motherduck.com/minter, then:
+export OPENROUTER_API_KEY="sk-or-v1-..."
 export OPENROUTER_MODEL="anthropic/claude-sonnet-4"`} />
 
-<Tip>Prefer direct Anthropic? `export ANTHROPIC_API_KEY="sk-ant-..."` — every code snippet in this workshop shows both variants.</Tip>
+<CopyBlock label="Option B — Bring Your Own Key" text={`# OpenRouter (works with Sonnet, GPT-4o, Gemini, etc.)
+export OPENROUTER_API_KEY="sk-or-v1-..."
+
+# …or direct Anthropic
+export ANTHROPIC_API_KEY="sk-ant-..."`} />
 
 ---
 
-## Option A: Devcontainer (fastest)
+## Bonus — Devcontainer
+
+Don't want to install Python, uv, and opencode yourself? Open the repo in a Codespace (or run the devcontainer locally) and skip straight to `export OPENROUTER_API_KEY=...`.
 
 <CopyBlock label="Open in Codespace" text={`# Click "Code" → "Codespaces" → "Create codespace on main"
-# Or from CLI:
+# Or from the CLI:
 gh codespace create --repo motherduckdb/analytics-agent-duckdb-workshop`} />
 
-Once the container is ready, export your key (see above) and verify:
-
-<CopyBlock label="Verify" text={`uv --version
-duckdb --version
+<CopyBlock label="Verify (inside devcontainer or local)" text={`python3 --version   # 3.10+
+uv --version
 opencode --version
-echo "OPENROUTER_API_KEY=\${OPENROUTER_API_KEY:+set}"`} />
+duckdb --version`} />
 
 ---
 
-## Option B: Local Setup
+## Side-note — Fully Local with Ollama
 
-<CopyBlock label="Install prerequisites" text={`# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install DuckDB CLI
-uv tool install duckdb-cli
-
-# Install opencode (agentic client that speaks OpenRouter)
-curl -fsSL https://opencode.ai/install | bash
-
-# Clone the repo
-git clone https://github.com/motherduckdb/analytics-agent-duckdb-workshop.git
-cd analytics-agent-duckdb-workshop/workshop`} />
-
-<CopyBlock label="Set your key" text={`export OPENROUTER_API_KEY="sk-or-v1-..."
-# or, if you prefer direct Anthropic:
-# export ANTHROPIC_API_KEY="sk-ant-..."`} />
-
----
-
-## Side-note: Fully Local with Ollama
-
-If you want to demo the flow **without any API cost or network**, Ollama + Gemma is a fine fallback. It's slower and less accurate, but the code is identical — only the provider string changes.
+Want to demo the flow **offline, no key needed**? Ollama + Gemma is a slower but free fallback. The code is identical — only the provider string changes.
 
 <CopyBlock label="Pull Gemma and serve" text={`ollama serve &
 ollama pull gemma4:latest`} />
-
-Every Python snippet in this workshop includes the Ollama variant as a commented alternative.
 
 ---
 
