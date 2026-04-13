@@ -49,6 +49,69 @@ The model can write SQL. The loop works. What broke it was **the data**. Two lay
 
 ---
 
+## The Loop, Upgraded
+
+Three changes turn the bare loop into one that accepts context and works with every provider:
+
+<CopyBlock label="agent_loop.py — with skill file" highlight={[2,19,32,33]} text={`from openai import OpenAI  # OpenAI SDK → any OpenAI-compatible endpoint
+import duckdb, json, os, sys
+
+# Default: OpenRouter + Claude Sonnet (BYOK)
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+)
+MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
+
+con = duckdb.connect("duckoffee.duckdb", read_only=True)
+
+tools = [{"type": "function", "function": {
+    "name": "query_duckdb",
+    "description": "Execute a read-only SQL query on the Duckoffee database.",
+    "parameters": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]},
+}}]
+
+skill = open("skill.md").read() if os.path.exists("skill.md") else ""
+
+def run_tool(name, args):
+    if name == "query_duckdb":
+        try:
+            rows = con.execute(args["sql"]).fetchall()
+            cols = [d[0] for d in con.description]
+            return json.dumps({"columns": cols, "rows": rows[:50]}, default=str)
+        except Exception as e:
+            return json.dumps({"error": str(e)})
+
+def ask(question):
+    messages = []
+    if skill:
+        messages.append({"role": "system", "content": skill})
+    messages.append({"role": "user", "content": question})
+    while True:
+        response = client.chat.completions.create(model=MODEL, tools=tools, messages=messages)
+        choice = response.choices[0]
+        if choice.message.content is None:
+            choice.message.content = ""
+        messages.append(choice.message)
+        if choice.finish_reason != "tool_calls":
+            return choice.message.content
+        for call in choice.message.tool_calls:
+            args = json.loads(call.function.arguments)
+            print(f"  tool: {call.function.name}: {args.get('sql', '')[:70]}")
+            result = run_tool(call.function.name, args)
+            messages.append({"role": "tool", "tool_call_id": call.id, "content": result})
+
+question = sys.argv[1] if len(sys.argv) > 1 else "What are the top 5 best-selling products?"
+print(ask(question))`} />
+
+| Change | Why |
+|--------|-----|
+| `import sys` + `sys.argv[1]` | Accept question from CLI |
+| `skill = open("skill.md")...` &rarr; system prompt | Inject business rules before the question |
+| `if content is None: content = ""` | Ollama rejects `null` content on assistant messages |
+
+---
+
 ## Skill File — The Guide
 
 A skill file tells the agent: use `orders` not `raw_orders`, amounts are in euros, customer_type is `'new'` or `'returning'` (not `'repeat'`).
