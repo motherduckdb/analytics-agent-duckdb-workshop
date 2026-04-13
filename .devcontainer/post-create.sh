@@ -81,4 +81,12 @@ else
     echo "    Run 'make pull' when you have good bandwidth."
 fi
 
+# Reclaim memory/disk: install caches left over from npm + uv + ollama
+# pulls can wedge 1-2 GiB in tmpfs during postCreate. Not reclaimable
+# otherwise until the container is rebuilt.
+echo "==> Cleaning caches..."
+npm cache clean --force 2>/dev/null || true
+rm -rf /tmp/v8-compile-cache-* /tmp/npm-* /tmp/ollama-backups 2>/dev/null || true
+sync
+
 echo "==> Workshop environment ready!"

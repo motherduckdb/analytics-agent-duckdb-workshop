@@ -11,7 +11,6 @@
     "storage": "64gb"
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/node:1": {}
   },
   "forwardPorts": [11434],
@@ -26,7 +25,25 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh"
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.next/**": true,
+          "**/.venv/**": true,
+          "**/site/**": true,
+          "**/.ollama/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/.next": true,
+          "**/.venv": true,
+          "**/site": true
+        },
+        "typescript.disableAutomaticTypeAcquisition": true,
+        "typescript.tsserver.maxTsServerMemory": 512,
+        "npm.autoDetect": "off",
+        "extensions.ignoreRecommendations": true,
+        "telemetry.telemetryLevel": "off"
       },
       "extensions": [
         "ms-python.python"
