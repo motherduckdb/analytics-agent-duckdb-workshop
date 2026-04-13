@@ -1,2 +1,2 @@
 :HL["/analytics-agent-duckdb-workshop/pr-preview/pr-4/_next/static/chunks/0_2scn1dlxt8..css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"context","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"zlCQ5XnxJ0ko4wldUkyAy"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"context","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"G_Z4qcqxC0EOhyzr4zZc2"}
