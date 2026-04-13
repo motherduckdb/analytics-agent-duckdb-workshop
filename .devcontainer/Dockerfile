@@ -15,9 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ---- uv (Python package manager) ----
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
-# ---- Ollama (install script auto-detects arch) ----
-RUN curl -fsSL https://ollama.com/install.sh | sh
-
 # ---- Switch to vscode user ----
 USER vscode
 ENV PATH="/home/vscode/.local/bin:${PATH}"

@@ -3,7 +3,7 @@ CONTAINER_NAME := pycon-workshop
 ARCH := $(shell uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 REPO_ROOT := $(shell cd .. && pwd)
 
-.PHONY: help setup pull data status build run shell stop clean
+.PHONY: help setup data build run shell stop clean
 
 # ──── Local (no Docker) ──────────────────────────────────
 
@@ -11,33 +11,9 @@ REPO_ROOT := $(shell cd .. && pwd)
 setup:
 	uv sync
 
-## pull     : Start Ollama (if needed) and pull Gemma 4 (9.6 GB)
-pull:
-	@if ! command -v ollama >/dev/null 2>&1; then \
-		echo "Error: ollama not found. Install it from https://ollama.com"; \
-		exit 1; \
-	fi
-	@if ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then \
-		echo "==> Starting Ollama..."; \
-		ollama serve &>/dev/null & \
-		for i in $$(seq 1 30); do \
-			curl -sf http://localhost:11434/api/tags >/dev/null 2>&1 && break; \
-			sleep 2; \
-		done; \
-		if ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then \
-			echo "Error: Ollama failed to start."; \
-			exit 1; \
-		fi; \
-	fi
-	ollama pull gemma4:latest
-
 ## data     : Generate workshop datasets
 data:
 	python3 data/generate.py
-
-## status   : Show Ollama models
-status:
-	@ollama list 2>/dev/null || echo "Ollama not running."
 
 # ──── Docker ─────────────────────────────────────────────
 
@@ -48,7 +24,8 @@ build:
 ## run      : Start the workshop container (build + post-create + post-start)
 run: build
 	docker run -d --name $(CONTAINER_NAME) --platform linux/$(ARCH) \
-		-v $(REPO_ROOT):/workspace -w /workspace -p 11434:11434 \
+		-v $(REPO_ROOT):/workspace -w /workspace \
+		-e OPENROUTER_API_KEY \
 		$(IMAGE_NAME) sleep infinity
 	docker exec $(CONTAINER_NAME) bash /workspace/.devcontainer/post-create.sh
 	docker exec $(CONTAINER_NAME) bash /workspace/.devcontainer/post-start.sh
