@@ -22,10 +22,12 @@ export function CopyBlock({
   text,
   label = "Prompt tip",
   lang,
+  highlight,
 }: {
   text: string;
   label?: string;
   lang?: string;
+  highlight?: number[];
 }) {
   const [copied, setCopied] = useState(false);
   const language = lang || detectLang(text);
@@ -114,13 +116,24 @@ export function CopyBlock({
                 background: md.text,
               }}
             >
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
-                  ))}
-                </div>
-              ))}
+              {tokens.map((line, i) => {
+                const highlighted = highlight?.includes(i + 1);
+                return (
+                  <div
+                    key={i}
+                    {...getLineProps({ line })}
+                    style={{
+                      ...(highlighted
+                        ? { background: "rgba(111,194,255,0.15)", margin: "0 -18px", padding: "0 18px", borderLeft: `3px solid ${md.accent}`, paddingLeft: 15 }
+                        : {}),
+                    }}
+                  >
+                    {line.map((token, key) => (
+                      <span key={key} {...getTokenProps({ token })} />
+                    ))}
+                  </div>
+                );
+              })}
             </pre>
           )}
         </Highlight>
