@@ -1,2 +1,3 @@
-:HL["/analytics-agent-duckdb-workshop/_next/static/chunks/0_2scn1dlxt8..css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"tools","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"cbxX8N-ctPBLi-SYk5Lss"}
+:HL["/analytics-agent-duckdb-workshop/_next/static/chunks/031zlaanv_p3x.css","style"]
+:HL["/analytics-agent-duckdb-workshop/motherduck-logo.svg","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"tools","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"Wdiu7opvd_wNVWXSxSNtX"}
