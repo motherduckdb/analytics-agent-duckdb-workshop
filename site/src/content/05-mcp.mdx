@@ -71,7 +71,20 @@ if __name__ == "__main__":
 
 ## Test Locally
 
-<CopyBlock label="FastMCP dev UI" text="fastmcp run mcp-server/server.py" />
+<CopyBlock label="FastMCP dev UI" text="fastmcp run mcp-server/server.py --transport http --port 8001" />
+
+<CopyBlock label="Add to Claude" text="claude mcp add --transport http duckoffee http://127.0.0.1:8001/mcp" />
+
+```text
+# What tools are in duckoffee?
+
+⏺ The duckoffee MCP server exposes 4 tools:
+
+  - mcp__duckoffee__query
+  - mcp__duckoffee__search_tables
+  - mcp__duckoffee__revenue_by_venue
+  - mcp__duckoffee__top_customers
+```
 
 Try:
 1. `search_tables("revenue")` — should warn about daily_revenue being stale (5/20 venues)
