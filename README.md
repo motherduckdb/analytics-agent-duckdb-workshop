@@ -1,6 +1,6 @@
-# SQL is Dead, Long Live SQL: Engineering reliable analytics agents from scratch
+# SQL is Dead, Long Live SQL : Engineering reliable analytics agents from scratch
 
-> [PyCon DE & PyData 2026](https://pretalx.com/pyconde-pydata-2026/talk/AF9DNH/) — April 14, 11:45–13:15
+> [PyCon DE & PyData 2026](https://pretalx.com/pyconde-pydata-2026/talk/AF9DNH/) — April 14, 11:45, Dynamicum [Ground Floor]
 > 90-minute hands-on tutorial by **Mehdi Ouazza** and **Dumky de Wilde**
 
 ## Repo structure
