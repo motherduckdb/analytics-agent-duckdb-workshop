@@ -1,28 +1,29 @@
+import { asset } from "@/lib/asset";
+
 ## What We Built
 
 In 90 minutes, you went from raw SQL to a distributed analytics toolkit:
 
-```
-  Question                  Answer
-     │                        ▲
-     ▼                        │
-  ┌──────────────────────────────┐
-  │       Any MCP Client         │
-  │  (Claude, opencode, custom)  │
-  └──────────┬───────────────────┘
-             │
-  ┌──────────▼───────────────────┐
-  │       MCP Server             │
-  │  ┌─────────┐ ┌────────────┐  │
-  │  │  Tools  │ │ Skill File │  │
-  │  └────┬────┘ └────────────┘  │
-  │       │                      │
-  │  ┌────▼────────────────────┐ │
-  │  │  DuckDB + COMMENT ON    │ │
-  │  │  (semantic context)     │ │
-  │  └─────────────────────────┘ │
-  └──────────────────────────────┘
-```
+<Mermaid chart={`flowchart TB
+    Q["Question"]:::user --> C
+    C["Any MCP Client<br/><span style='font-size:11px;color:#A1A1A1'>Claude · opencode · custom</span>"]:::client
+    C --> S
+
+    subgraph S["MCP Server"]
+        T["Tools"]:::tool
+        SK["Skill File"]:::tool
+        T --> DB
+        SK --> DB
+        DB[("DuckDB + COMMENT ON<br/><span style='font-size:11px;color:#A1A1A1'>semantic context</span>")]:::db
+    end
+
+    S --> A["Answer"]:::user
+
+    classDef user fill:#FFDE00,stroke:#383838,stroke-width:2px,color:#383838,font-weight:700
+    classDef client fill:#FFFFFF,stroke:#6FC2FF,stroke-width:2px,color:#383838,font-weight:700
+    classDef tool fill:#FFFFFF,stroke:#16AA98,stroke-width:1.5px,color:#383838
+    classDef db fill:#383838,stroke:#16AA98,stroke-width:2px,color:#FFFFFF,font-weight:700
+`} />
 
 ---
 
@@ -52,14 +53,46 @@ In 90 minutes, you went from raw SQL to a distributed analytics toolkit:
 
 ---
 
+## MotherDuck AI Features
+
+<div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+  <img src={asset("/motherduck-logo.svg")} alt="MotherDuck" style={{ height: 40, width: "auto" }} />
+  <div style={{ fontSize: 17, color: "#383838" }}>AI-native capabilities on top of the DuckDB engine you just learned:</div>
+</div>
+
+<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginTop: 14 }}>
+  <div style={{ padding: "20px 22px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 15, color: "#6FC2FF", fontWeight: 700, marginBottom: 8 }}>MCP Server</div>
+    <div style={{ fontSize: 17, lineHeight: 1.55 }}>
+      Connect any MCP client (Claude, opencode, your own agent) to your MotherDuck warehouse — the managed version of the server you just built.
+    </div>
+    <div style={{ marginTop: 10 }}>
+      <a href="https://motherduck.com/docs/sql-reference/mcp/" target="_blank" rel="noreferrer" style={{ fontSize: 14, color: "#6FC2FF", fontFamily: "'Space Mono', monospace" }}>motherduck.com/docs/.../mcp ↗</a>
+    </div>
+  </div>
+  <div style={{ padding: "20px 22px", background: "#FFFFFF", border: "1.5px solid #E8E3DE", borderRadius: 8 }}>
+    <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 15, color: "#16AA98", fontWeight: 700, marginBottom: 8 }}>Dives</div>
+    <div style={{ fontSize: 17, lineHeight: 1.55 }}>
+      AI-powered data exploration — ask questions in natural language, get interactive visualizations and reports from your warehouse data.
+    </div>
+    <div style={{ marginTop: 10 }}>
+      <a href="https://motherduck.com/product/dives/" target="_blank" rel="noreferrer" style={{ fontSize: 14, color: "#16AA98", fontFamily: "'Space Mono', monospace" }}>motherduck.com/product/dives ↗</a>
+    </div>
+  </div>
+</div>
+
+---
+
 ## Go Further
 
 | What | Where |
 |------|-------|
-| **MotherDuck MCP** | The managed, cloud version of what you built today |
+| **Guide to BI in the Agentic Era** | [motherduck.com/lp/guide-to-bi-in-the-agentic-era-full](https://motherduck.com/lp/guide-to-bi-in-the-agentic-era-full/) |
+| **DuckDB** | [duckdb.org](https://duckdb.org) |
 | **PydanticAI docs** | [docs.pydantic.dev/pydantic-ai](https://docs.pydantic.dev/pydantic-ai) |
 | **FastMCP** | [github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp) |
-| **DuckDB docs** | [duckdb.org/docs](https://duckdb.org/docs) |
+| **MotherDuck blog** | [motherduck.com/blog](https://motherduck.com/blog/) |
+| **MotherDuck YouTube** | [youtube.com/@motherduckdb](https://www.youtube.com/@motherduckdb) |
 | **This workshop** | [github.com/motherduckdb/analytics-agent-duckdb-workshop](https://github.com/motherduckdb/analytics-agent-duckdb-workshop) |
 
 ---

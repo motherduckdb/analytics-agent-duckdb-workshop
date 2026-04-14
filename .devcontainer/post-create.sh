@@ -29,13 +29,13 @@ if command -v npm &> /dev/null; then
     npm install -g @anthropic-ai/claude-code 2>/dev/null || echo "    Claude Code install skipped."
 fi
 
-# Default opencode config: OpenRouter + Claude Sonnet. opencode picks up
+# Default opencode config: OpenRouter + GPT-5.4-nano. opencode picks up
 # OPENROUTER_API_KEY from the environment at runtime — no key baked in here.
 mkdir -p ~/.config/opencode
 cat > ~/.config/opencode/opencode.json << 'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/anthropic/claude-sonnet-4"
+  "model": "openrouter/openai/gpt-5.4-nano"
 }
 EOF
 

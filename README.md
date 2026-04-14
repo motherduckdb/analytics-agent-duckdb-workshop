@@ -1,128 +1,99 @@
-# SQL is Dead, Long Live SQL
-
-**Engineering reliable analytics agents from scratch**
+# SQL is Dead, Long Live SQL : Engineering reliable analytics agents from scratch
 
 > [PyCon DE & PyData 2026](https://pretalx.com/pyconde-pydata-2026/talk/AF9DNH/) — April 14, 11:45, Dynamicum [Ground Floor]
 > 90-minute hands-on tutorial by **Mehdi Ouazza** and **Dumky de Wilde**
 
-Is SQL still worth learning in 2026? We test Text-to-SQL to its limits — ambiguity, hallucinations, dirty data — then build practical solutions. You'll construct a local analytics agent using DuckDB, MCP, and a semantic layer.
+## Repo structure
 
-## Prerequisites
+```
+workshop/                      <-- START HERE
+├── duckoffee.duckdb           # Dataset: a coffee-shop chain across 13 cities
+├── skill.md                   # Agent instructions (semantic layer)
+├── pyproject.toml             # Python deps: duckdb, pydantic-ai, fastmcp, openai
+├── Makefile                   # make setup
+└── (your code)                # agent_loop.py, agent_tools.py, mcp-server/, …
 
-- **Python 3.10+** and beginner SQL (joins, aggregations)
-- No prior AI/LLM experience required
-- One of the setups below
+solutions/                     # Reference implementations for every part
 
-## Setup Options
+site/                          # Slide deck (Next.js → GitHub Pages)
+└── src/content/*.mdx          # One MDX file per part
 
-### Option A: GitHub Codespace (recommended, zero install)
-
-Click **"Use this template"** → **"Open in a codespace"**. Everything is pre-installed. You land in `workshop/` ready to go.
-
-### Option B: Local with Docker
-
-Requires: [Docker](https://docs.docker.com/get-docker/) and [uv](https://docs.astral.sh/uv/)
-
-```bash
-cd workshop
-make setup          # install Python deps
-make pull           # pull Gemma 4 via Ollama (9.6 GB — needs bandwidth)
+.devcontainer/                 # Codespace / devcontainer (Python, uv, opencode)
 ```
 
-Uses **Ollama + Gemma 4** (fully local, no API key) and **opencode** as the agentic CLI.
+**All exercises happen inside `workshop/`.** Clone the repo, `cd workshop`, and follow the slides.
 
-### Option C: Local with Anthropic API key
+## Get started
 
-Requires: [uv](https://docs.astral.sh/uv/) and an [Anthropic API key](https://console.anthropic.com/)
-
-```bash
-cd workshop
-make setup
-export ANTHROPIC_API_KEY=sk-ant-...
-```
-
-Uses **Claude** via API and **Claude Code** as the agentic CLI:
+### 1. Clone
 
 ```bash
-npm install -g @anthropic-ai/claude-code
-claude
+git clone https://github.com/motherduckdb/analytics-agent-duckdb-workshop.git
+cd analytics-agent-duckdb-workshop/workshop
 ```
 
-### Option D: Mix and match
+### 2. Install tools
 
-You can use any combination:
-- **Model**: Anthropic API (Claude) or Ollama (Gemma 4, fully local)
-- **Agentic CLI**: Claude Code (Anthropic) or opencode (Ollama)
-- **Python agent**: PydanticAI works with both (`"anthropic:claude-sonnet-4-20250514"` or `"ollama:gemma4:latest"`)
+You need **Python 3.10+**, **uv**, and **opencode**:
 
-## Workshop Outline
+```bash
+# uv (fast Python package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# opencode (agentic CLI)
+curl -fsSL https://opencode.ai/install | bash
+
+# workshop Python deps
+uv sync
+```
+
+### 3. Get your model key
+
+Pick one:
+
+| Option | How |
+|--------|-----|
+| **MotherDuck-minted key** (recommended) | Go to **[motherduck.com/minter](https://motherduck.com/minter)** — pre-funded, no signup hassle |
+| **Bring your own key** | OpenRouter, Anthropic, or OpenAI — any provider that speaks the OpenAI chat API |
+
+```bash
+export OPENROUTER_API_KEY="sk-or-v1-..."
+```
+
+### 4. Verify
+
+```bash
+python3 --version   # 3.10+
+uv --version
+duckdb --version
+opencode --version
+```
+
+### Bonus: Devcontainer (zero local install)
+
+Don't want to install Python/uv/opencode? Open the repo in a **GitHub Codespace** — everything is pre-installed, you just bring your key.
+
+```bash
+gh codespace create --repo motherduckdb/analytics-agent-duckdb-workshop
+```
+
+## Workshop outline
 
 | Part | Topic | Time |
 |------|-------|------|
-| 0 | Setup | 5 min |
 | 1 | DuckDB from Python | 10 min |
 | 2 | Text-to-SQL & the agentic loop | 15 min |
-| 3 | Context: skill file + semantic layer | 15 min |
+| 3 | Context: skill file + COMMENT ON | 15 min |
 | 4 | Deterministic tools with PydanticAI | 20 min |
 | 5 | Distribute via FastMCP | 15 min |
 
-## Repo Structure
+## Links
 
-```
-workshop/                      ← STUDENTS work here
-├── duckoffee.duckdb           # Duckoffee e-commerce dataset
-├── skill.md                   # Agent instructions (semantic layer)
-├── pyproject.toml             # Python deps: duckdb, pydantic-ai, fastmcp
-├── Makefile                   # make setup, make pull, make status
-└── (your code here)           # agent_loop.py, agent_tools.py, etc.
-
-site/                          ← Course website (GitHub Pages)
-├── src/content/               # MDX content — one file per part
-│   ├── 00-setup.mdx
-│   ├── 01-duckdb.mdx
-│   ├── 02-loop.mdx
-│   ├── 03-context.mdx
-│   ├── 04-tools.mdx
-│   └── 05-mcp.mdx
-├── src/components/            # React UI: CopyBlock, Quiz, animations
-└── package.json               # Next.js + MDX
-
-.devcontainer/                 # Codespace / devcontainer config
-.github/workflows/deploy.yml   # Deploys site/ to GitHub Pages
-```
-
-## Course Website
-
-The course content is a Next.js static site deployed to GitHub Pages. Students follow along on the site; the presenter navigates blocks with arrow keys.
-
-### Editing content
-
-All course content lives in `site/src/content/*.mdx`. Each file is one part of the workshop. Blocks are separated by `---` (horizontal rules). Components available in MDX:
-
-- `<CopyBlock text="..." />` — code block with copy button and syntax highlighting
-- `<Quiz question="..." options={[...]} correct={N} />` — inline quiz
-- `<Tip>...</Tip>` — callout box
-- `<Badge color="...">...</Badge>` — colored label
-- `<AgenticLoop />` — animated agentic loop diagram
-
-### Running the site locally
-
-```bash
-cd site
-npm install
-npm run dev        # http://localhost:3000
-```
-
-### Building for production
-
-```bash
-cd site
-npm run build      # static output in site/out/
-```
-
-## Suggested repo name
-
-`sql-is-dead-long-live-sql` or `analytics-agent-workshop`
+- **Slides**: [motherduck.com/pyconde2026](https://motherduck.com/pyconde2026)
+- **Model key**: [motherduck.com/minter](https://motherduck.com/minter)
+- **DuckDB docs**: [duckdb.org/docs](https://duckdb.org/docs)
+- **PydanticAI docs**: [docs.pydantic.dev/pydantic-ai](https://docs.pydantic.dev/pydantic-ai)
+- **FastMCP**: [github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
 
 ## License
 
