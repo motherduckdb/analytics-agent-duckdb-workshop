@@ -9,7 +9,7 @@ import {
   type ReactNode,
   type ReactElement,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { theme, PARTS, partHref } from "@/lib/theme";
 import { useSlideState } from "@/components/SlideState";
 import { useFullscreen } from "@/components/PresentationShell";
@@ -46,7 +46,9 @@ export function PartPage({
 }) {
   const blocks = splitByHr(children);
   const total = blocks.length;
-  const [current, setCurrent] = useState(0);
+  const searchParams = useSearchParams();
+  const startLast = searchParams.get("slide") === "last";
+  const [current, setCurrent] = useState(startLast ? Math.max(0, blocks.length - 1) : 0);
 
   const router = useRouter();
   const { setState } = useSlideState();
@@ -70,7 +72,7 @@ export function PartPage({
     if (!isFirst) {
       setCurrent((c) => c - 1);
     } else if (prevPart) {
-      router.push(partHref(prevPart));
+      router.push(partHref(prevPart) + "?slide=last");
     }
   }, [isFirst, prevPart, router]);
 
