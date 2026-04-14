@@ -13,7 +13,7 @@ MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
 # client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 # MODEL  = "gemma4:26b"
 
-con = duckdb.connect("../duckoffee.duckdb", read_only=True)
+con = duckdb.connect("./duckoffee.duckdb", read_only=True)
 
 tools = [{"type": "function", "function": {
     "name": "query_duckdb",
