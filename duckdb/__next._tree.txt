@@ -1,4 +1,4 @@
 :HL["/analytics-agent-duckdb-workshop/_next/static/chunks/17zbps8z..yjl.css","style"]
 :HL["/analytics-agent-duckdb-workshop/motherduck-logo.svg","image"]
 :HL["/analytics-agent-duckdb-workshop/duckdb-logo.svg","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"duckdb","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"yOuohAO5Bamy-HpuwUwcp"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"duckdb","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"KQkE3P4cvN17OehUqRgn3"}
