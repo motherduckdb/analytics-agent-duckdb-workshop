@@ -74,15 +74,16 @@ This is PyCon — let's use Python. Same engine, same SQL.
 
 <CopyBlock label="Create part1.py" text={`import duckdb
 
-con = duckdb.connect("duckoffee.duckdb", read_only=True)
+con = duckdb.connect()                     # in-memory session
+con.sql("ATTACH 'duckoffee.duckdb' AS db") # same concept as ATTACH 'md:' for MotherDuck
 
 con.sql("""
     SELECT
-        (SELECT count(*) FROM orders) AS orders,
-        (SELECT count(*) FROM customers) AS customers,
-        (SELECT count(*) FROM order_items) AS line_items,
-        (SELECT count(*) FROM products) AS products,
-        (SELECT count(*) FROM locations) AS venues
+        (SELECT count(*) FROM db.orders) AS orders,
+        (SELECT count(*) FROM db.customers) AS customers,
+        (SELECT count(*) FROM db.order_items) AS line_items,
+        (SELECT count(*) FROM db.products) AS products,
+        (SELECT count(*) FROM db.locations) AS venues
 """).show()`} />
 
 <CopyBlock label="Run it" text="uv run python part1.py" />

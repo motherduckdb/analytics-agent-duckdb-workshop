@@ -4,27 +4,26 @@ import { asset } from "@/lib/asset";
 
 In 90 minutes, you went from raw SQL to a distributed analytics toolkit:
 
-```
-  Question                  Answer
-     │                        ▲
-     ▼                        │
-  ┌──────────────────────────────┐
-  │       Any MCP Client         │
-  │  (Claude, opencode, custom)  │
-  └──────────┬───────────────────┘
-             │
-  ┌──────────▼───────────────────┐
-  │       MCP Server             │
-  │  ┌─────────┐ ┌────────────┐  │
-  │  │  Tools  │ │ Skill File │  │
-  │  └────┬────┘ └────────────┘  │
-  │       │                      │
-  │  ┌────▼────────────────────┐ │
-  │  │  DuckDB + COMMENT ON    │ │
-  │  │  (semantic context)     │ │
-  │  └─────────────────────────┘ │
-  └──────────────────────────────┘
-```
+<Mermaid chart={`flowchart TB
+    Q["Question"]:::user --> C
+    C["Any MCP Client<br/><span style='font-size:11px;color:#A1A1A1'>Claude · opencode · custom</span>"]:::client
+    C --> S
+
+    subgraph S["MCP Server"]
+        T["Tools"]:::tool
+        SK["Skill File"]:::tool
+        T --> DB
+        SK --> DB
+        DB[("DuckDB + COMMENT ON<br/><span style='font-size:11px;color:#A1A1A1'>semantic context</span>")]:::db
+    end
+
+    S --> A["Answer"]:::user
+
+    classDef user fill:#FFDE00,stroke:#383838,stroke-width:2px,color:#383838,font-weight:700
+    classDef client fill:#FFFFFF,stroke:#6FC2FF,stroke-width:2px,color:#383838,font-weight:700
+    classDef tool fill:#FFFFFF,stroke:#16AA98,stroke-width:1.5px,color:#383838
+    classDef db fill:#383838,stroke:#16AA98,stroke-width:2px,color:#FFFFFF,font-weight:700
+`} />
 
 ---
 
