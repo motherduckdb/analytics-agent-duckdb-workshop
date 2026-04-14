@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Suspense,
   useState,
   useEffect,
   useCallback,
@@ -36,11 +37,22 @@ function splitByHr(children: ReactNode): ReactNode[][] {
   return blocks.filter((b) => b.length > 0);
 }
 
-export function PartPage({
+export function PartPage(props: {
+  title?: string;
+  partId: string;
+  children: ReactNode;
+}) {
+  return (
+    <Suspense>
+      <PartPageInner {...props} />
+    </Suspense>
+  );
+}
+
+function PartPageInner({
   partId,
   children,
 }: {
-  /** Accepted for backwards-compat but no longer rendered above the slide. */
   title?: string;
   partId: string;
   children: ReactNode;
