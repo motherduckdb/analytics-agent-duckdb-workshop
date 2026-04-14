@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 ## What is Semantic Context?
 
 The **semantic layer** — a single source of truth for metrics and definitions — is an appealing idea. But people, like water, follow the path of least resistance.
@@ -228,3 +230,19 @@ For a **board deck** or **financial report**, you need the exact same SQL every 
   correct={1}
   explanation="daily_revenue is stale: it only has data for 5 of 20 venues (The Pond Stage, Feather & Bean, Quack Quarter, Mallard Manor, and The Duck Yard), and has no rows after 2025-12-31. Always compute revenue from the orders table instead."
 />
+
+---
+
+## What about MotherDuck?
+
+<div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 10 }}>
+  <img src={asset("/motherduck-logo.svg")} alt="MotherDuck" style={{ height: 40, width: "auto" }} />
+</div>
+
+**DuckDB, supercharged.** MotherDuck is the serverless analytics platform built on DuckDB — run the same SQL from your laptop to a cloud data warehouse to customer-facing applications, with zero infrastructure to manage.
+
+<CopyBlock label="One line to connect" text={`ATTACH 'md:';`} lang="sql" />
+
+That single statement connects your local DuckDB session to MotherDuck's cloud. Query local files and cloud tables in the same SQL — the engine splits work between your machine and the cloud automatically.
+
+<Tip>Everything you built today with a local `.duckdb` file works the same way on MotherDuck — skill files, COMMENT ON, PydanticAI tools, MCP servers. Just swap the connection string.</Tip>
