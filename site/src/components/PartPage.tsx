@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Suspense,
   useState,
   useEffect,
   useCallback,
@@ -9,8 +10,9 @@ import {
   type ReactNode,
   type ReactElement,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { theme, PARTS, partHref } from "@/lib/theme";
+import { asset } from "@/lib/asset";
 import { useSlideState } from "@/components/SlideState";
 import { useFullscreen } from "@/components/PresentationShell";
 
@@ -35,18 +37,31 @@ function splitByHr(children: ReactNode): ReactNode[][] {
   return blocks.filter((b) => b.length > 0);
 }
 
-export function PartPage({
+export function PartPage(props: {
+  title?: string;
+  partId: string;
+  children: ReactNode;
+}) {
+  return (
+    <Suspense>
+      <PartPageInner {...props} />
+    </Suspense>
+  );
+}
+
+function PartPageInner({
   partId,
   children,
 }: {
-  /** Accepted for backwards-compat but no longer rendered above the slide. */
   title?: string;
   partId: string;
   children: ReactNode;
 }) {
   const blocks = splitByHr(children);
   const total = blocks.length;
-  const [current, setCurrent] = useState(0);
+  const searchParams = useSearchParams();
+  const startLast = searchParams.get("slide") === "last";
+  const [current, setCurrent] = useState(startLast ? Math.max(0, blocks.length - 1) : 0);
 
   const router = useRouter();
   const { setState } = useSlideState();
@@ -70,7 +85,7 @@ export function PartPage({
     if (!isFirst) {
       setCurrent((c) => c - 1);
     } else if (prevPart) {
-      router.push(partHref(prevPart));
+      router.push(partHref(prevPart) + "?slide=last");
     }
   }, [isFirst, prevPart, router]);
 
@@ -137,6 +152,36 @@ export function PartPage({
           }}
         >
           <div>{blocks[current]}</div>
+
+          {/* QR code: bottom-left of the card */}
+          <div
+            style={{
+              position: "absolute",
+              left: 18,
+              bottom: 16,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <img
+              src={asset("/slides-qr.png")}
+              alt="Scan for slides"
+              style={{ width: 48, height: 48 }}
+            />
+            <span
+              style={{
+                fontSize: 10,
+                fontFamily: theme.titleFont,
+                color: theme.muted,
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+              }}
+            >
+              slides
+            </span>
+          </div>
 
           {/* Overlay slide nav: bottom-right of the card */}
           <div
