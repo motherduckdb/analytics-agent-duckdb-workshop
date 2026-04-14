@@ -15,7 +15,8 @@ The LLM decides **when** to call a tool. The code decides **what** happens.
 
 ## Agent with PydanticAI
 
-<CopyBlock label="Create agent_tools.py" text={`import os, json, duckdb
+<CopyBlock label="Create agent_tools.py" text={`from dotenv import load_dotenv; load_dotenv()
+import os, json, duckdb
 from pathlib import Path
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel

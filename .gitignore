@@ -6,6 +6,7 @@ __pycache__/
 *.pyc
 .venv/
 workshop/.venv/
+.env
 
 # Node
 site/node_modules/

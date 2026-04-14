@@ -1,3 +1,4 @@
+from dotenv import load_dotenv; load_dotenv()
 import asyncio, os
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel
