@@ -3,16 +3,16 @@ from openai import OpenAI  # OpenAI SDK -> any OpenAI-compatible endpoint
 import duckdb, json, os, sys
 
 # Default: OpenRouter + Claude Sonnet (BYOK)
-# client = OpenAI(
-#     base_url="https://openrouter.ai/api/v1",
-#     api_key=os.environ["OPENROUTER_API_KEY"],
-# )
-# MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+)
+MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
 
 # Side-note: fully local, swap the two lines above for:
-client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+# client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 # MODEL  = "gemma4:26b"
-MODEL = "qwen3.5:0.8b"
+
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
 tools = [{"type": "function", "function": {

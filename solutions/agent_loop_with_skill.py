@@ -10,10 +10,8 @@ client = OpenAI(
 MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
 
 # Side-note: fully local, swap the two lines above for:
-#client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+# client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 # MODEL  = "gemma4:26b"
-#MODEL = "qwen3.5:0.8b"
-#MODEL = "qwen3.5:4b"
 
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
