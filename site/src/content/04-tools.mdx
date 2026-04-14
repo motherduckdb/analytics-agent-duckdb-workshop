@@ -23,9 +23,9 @@ from pydantic_ai.providers.openrouter import OpenRouterProvider
 
 con = duckdb.connect("duckoffee.duckdb", read_only=True)
 
-# Default: OpenRouter + Claude Sonnet
+# Default: OpenRouter + GPT-5.4-nano
 model = OpenAIChatModel(
-    os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4"),
+    os.environ.get("OPENROUTER_MODEL", "openai/gpt-5.4-nano"),
     provider=OpenRouterProvider(api_key=os.environ["OPENROUTER_API_KEY"]),
 )
 
