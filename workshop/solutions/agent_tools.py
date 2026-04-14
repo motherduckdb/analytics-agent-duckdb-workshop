@@ -5,7 +5,7 @@ from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openrouter import OpenRouterProvider
 
-con = duckdb.connect("duckoffee.duckdb", read_only=True)
+con = duckdb.connect("../duckoffee.duckdb", read_only=True)
 
 # Default: OpenRouter + Claude Sonnet
 model = OpenAIChatModel(
