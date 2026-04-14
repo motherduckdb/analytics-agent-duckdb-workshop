@@ -102,7 +102,8 @@ Try:
 
 An agent that discovers tools **from the server**:
 
-<CopyBlock label="agent_mcp.py" text={`import asyncio, os
+<CopyBlock label="agent_mcp.py" text={`from dotenv import load_dotenv; load_dotenv()
+import asyncio, os
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openrouter import OpenRouterProvider

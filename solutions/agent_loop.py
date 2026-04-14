@@ -1,3 +1,4 @@
+from dotenv import load_dotenv; load_dotenv()
 from openai import OpenAI  # OpenAI SDK -> any OpenAI-compatible endpoint
 import duckdb, json, os, sys
 

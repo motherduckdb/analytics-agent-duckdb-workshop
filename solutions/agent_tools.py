@@ -1,3 +1,4 @@
+from dotenv import load_dotenv; load_dotenv()
 import os, json, sys, duckdb
 from pathlib import Path
 from pydantic_ai import Agent

@@ -82,7 +82,8 @@ Watch the full cycle: prompt &rarr; tool call &rarr; error &rarr; self-correct &
 
 ~35 lines of Python. The agentic loop is just a `while` loop:
 
-<CopyBlock label="Create agent_loop.py" text={`from openai import OpenAI  # OpenAI SDK → any OpenAI-compatible endpoint
+<CopyBlock label="Create agent_loop.py" text={`from dotenv import load_dotenv; load_dotenv()
+from openai import OpenAI  # OpenAI SDK → any OpenAI-compatible endpoint
 import duckdb, json, os, sys
 
 # Default: OpenRouter + GPT-5.4-nano

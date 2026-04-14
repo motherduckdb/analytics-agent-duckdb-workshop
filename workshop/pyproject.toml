@@ -9,4 +9,5 @@ dependencies = [
     "pydantic-ai>=1.79.0",
     "fastmcp>=2.14.6",
     "openai>=2.31.0",
+    "python-dotenv>=1.1.0",
 ]
