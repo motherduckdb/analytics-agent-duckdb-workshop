@@ -11,6 +11,7 @@ import {
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { theme, PARTS, partHref } from "@/lib/theme";
+import { asset } from "@/lib/asset";
 import { useSlideState } from "@/components/SlideState";
 import { useFullscreen } from "@/components/PresentationShell";
 
@@ -139,6 +140,36 @@ export function PartPage({
           }}
         >
           <div>{blocks[current]}</div>
+
+          {/* QR code: bottom-left of the card */}
+          <div
+            style={{
+              position: "absolute",
+              left: 18,
+              bottom: 16,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <img
+              src={asset("/slides-qr.png")}
+              alt="Scan for slides"
+              style={{ width: 48, height: 48 }}
+            />
+            <span
+              style={{
+                fontSize: 10,
+                fontFamily: theme.titleFont,
+                color: theme.muted,
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+              }}
+            >
+              slides
+            </span>
+          </div>
 
           {/* Overlay slide nav: bottom-right of the card */}
           <div
