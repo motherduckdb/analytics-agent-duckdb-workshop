@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,42971,e=>{"use strict";var t=e.i(53886);e.i(77644),e.S([t,"createPacketServices,q"],42971)}]);

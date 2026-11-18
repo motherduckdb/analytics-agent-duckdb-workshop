@@ -1,0 +1,5 @@
+:HL["/analytics-agent-duckdb-workshop/pr-preview/pr-42/_next/static/chunks/43tyt6j32gvh5.css","style"]
+:HL["/analytics-agent-duckdb-workshop/pr-preview/pr-42/motherduck-logo.svg","image"]
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"loop","h":64,"c":"$Q2"}]]
+0:{"b":"79Y-k-Odwj6MybYkSSalh","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
